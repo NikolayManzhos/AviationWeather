@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/fragmentBackground">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/refresh_layout_taf"
+        android:id="@+id/refresh_layout_metar"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -16,7 +17,7 @@
             android:padding="20sp">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/taf_raw"
+                android:id="@+id/metar_raw"
                 android:layout_width="300dp"
                 android:layout_height="100dp"
                 app:cardElevation="2dp">
@@ -25,7 +26,7 @@
                     android:layout_height="match_parent"
                     android:padding="8dp">
                     <TextView
-                        android:id="@+id/text_view_raw_taf"
+                        android:id="@+id/text_view_raw_metar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </RelativeLayout>
@@ -36,5 +37,7 @@
 
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+
 
 </LinearLayout>

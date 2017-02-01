@@ -3,6 +3,7 @@
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
     <string name="latest_airports">Latest airports</string>
+    <string name="search_hint">Type code here</string>
     <string-array name="tab_names">
         <item>METAR</item>
         <item>TAF</item>

@@ -1,10 +1,14 @@
 package defaultapps.com.aviationweather.adapters;
 
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import defaultapps.com.aviationweather.R;
+import defaultapps.com.aviationweather.controllers.MetarController;
 import defaultapps.com.aviationweather.fragments.MetarFragment;
 import defaultapps.com.aviationweather.fragments.TafFragment;
 import defaultapps.com.aviationweather.utils.MyApplication;
@@ -13,9 +17,13 @@ import defaultapps.com.aviationweather.utils.MyApplication;
  * Created on 2/1/2017.
  */
 
-public class MainTabAdapter extends FragmentStatePagerAdapter {
+public class MainTabAdapter extends FragmentPagerAdapter {
 
     private String[] tabNames;
+
+    public MetarFragment metarFragment;
+    public TafFragment tafFragment;
+
 
     public MainTabAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
@@ -27,9 +35,9 @@ public class MainTabAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return new MetarFragment();
+                return metarFragment = new MetarFragment();
             case 1:
-                return new TafFragment();
+                return tafFragment = new TafFragment();
             default:
                 return new MetarFragment();
         }
@@ -43,5 +51,10 @@ public class MainTabAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabNames[position];
+    }
+
+
+    public void updateMetarTaf(String airportCode) {
+        metarFragment.updateAllViews(airportCode);
     }
 }
