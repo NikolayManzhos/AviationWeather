@@ -1,7 +1,7 @@
 package defaultapps.com.aviationweather.controllers;
 
 import defaultapps.com.aviationweather.models.taf.TAF;
-import defaultapps.com.aviationweather.utils.MyApplication;
+import defaultapps.com.aviationweather.miscs.MyApplication;
 import defaultapps.com.aviationweather.views.TafView;
 import retrofit2.Call;
 import retrofit2.Callback;

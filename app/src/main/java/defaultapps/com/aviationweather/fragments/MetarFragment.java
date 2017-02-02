@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.controllers.MetarController;
+import defaultapps.com.aviationweather.views.MainView;
 import defaultapps.com.aviationweather.views.MetarView;
 
 
@@ -46,10 +47,7 @@ public class MetarFragment extends Fragment implements MetarView {
 
         if (savedInstanceState != null) {
             String saved = savedInstanceState.getString("rawMetar");
-            Log.i("METAR_SAVED_ON_ACTIVITY", saved );
             rawMetar.setText(saved);
-        } else {
-            Log.i("METAR_SAVED_ON_ACTIVITY", "FAIL" );
         }
     }
 
@@ -60,11 +58,6 @@ public class MetarFragment extends Fragment implements MetarView {
 
         metarController = new MetarController(this);
 
-        if (savedInstanceState != null) {
-            Log.i("METAR_SAVED_ON_CREATE", savedInstanceState.getString("rawMetar"));
-        }   else {
-            Log.i("METAR_SAVED_ON_CREATE", "FAIL" );
-        }
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -79,21 +72,25 @@ public class MetarFragment extends Fragment implements MetarView {
         return rootView;
     }
 
-    public void updateAllViews(String airportCode) {
-        metarController.updateMetar(airportCode);
-    }
-
     @Override
     public void updateRawMetar(String rawMetar) {
-        Log.i(MetarFragment.class.getName(), rawMetar);
-        this.rawMetar.setText(rawMetar);
+        updateViews(rawMetar);
         refreshLayout.setRefreshing(false);
+    }
+
+    public void updateViews(String rawMetar) {
+//        Log.i(MetarFragment.class.getName(), rawMetar);
+        if (this.rawMetar != null) {
+            this.rawMetar.setText(rawMetar);
+        }
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("rawMetar", rawMetar.getText().toString());
+        if (!rawMetar.getText().toString().equals("")) {
+            outState.putString("rawMetar", rawMetar.getText().toString());
+        }
 
     }
 

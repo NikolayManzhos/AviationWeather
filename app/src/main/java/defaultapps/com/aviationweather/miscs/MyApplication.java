@@ -1,7 +1,10 @@
-package defaultapps.com.aviationweather.utils;
+package defaultapps.com.aviationweather.miscs;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.MaterialModule;
 
 import defaultapps.com.aviationweather.api.AviationWeatherAPI;
 import retrofit2.Retrofit;
@@ -23,6 +26,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Iconify.with(new MaterialModule());
         mContext = getApplicationContext();
 
         retrofit = new Retrofit.Builder()

@@ -3,7 +3,7 @@ package defaultapps.com.aviationweather.controllers;
 import android.util.Log;
 
 import defaultapps.com.aviationweather.models.metar.METAR;
-import defaultapps.com.aviationweather.utils.MyApplication;
+import defaultapps.com.aviationweather.miscs.MyApplication;
 import defaultapps.com.aviationweather.views.MetarView;
 import retrofit2.Call;
 import retrofit2.Callback;

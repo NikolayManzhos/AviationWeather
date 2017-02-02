@@ -3,6 +3,7 @@ package defaultapps.com.aviationweather.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +30,17 @@ public class TafFragment extends Fragment implements TafView {
     @BindView(R.id.text_view_raw_taf)
     TextView rawTaf;
 
+    @BindView(R.id.refresh_layout_taf)
+    SwipeRefreshLayout swipeRefreshLayout;
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState != null) {
+            rawTaf.setText(savedInstanceState.getString("rawTaf"));
+        }
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -40,13 +52,30 @@ public class TafFragment extends Fragment implements TafView {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (!rawTaf.getText().toString().equals("")) {
+            outState.putString("rawTaf", rawTaf.getText().toString());
+        }
+    }
+
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
     }
 
     @Override
-    public void updateRawTaf(String taf) {
-        rawTaf.setText(taf);
+    public void updateRawTaf(String tafRaw) {
+        updateViews(tafRaw);
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void updateViews(String tafRaw) {
+        if (rawTaf != null) {
+            rawTaf.setText(tafRaw);
+        }
+
     }
 }
