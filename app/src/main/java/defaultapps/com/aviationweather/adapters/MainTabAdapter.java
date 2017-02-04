@@ -18,19 +18,18 @@ import defaultapps.com.aviationweather.miscs.MyApplication;
  * Created on 2/1/2017.
  */
 
-public class MainTabAdapter extends FragmentStatePagerAdapter {
+public class MainTabAdapter extends FragmentPagerAdapter {
 
     private String[] tabNames;
 
-    private HashMap<Integer, Fragment> mPageReferenceMap;
-
+    private MetarFragment metarFragment;
+    private TafFragment tafFragment;
 
 
 
     public MainTabAdapter(FragmentManager fragmentManager) {
         super(fragmentManager);
         tabNames = MyApplication.getAppContext().getResources().getStringArray(R.array.tab_names);
-        mPageReferenceMap = new HashMap<>();
     }
 
 
@@ -38,25 +37,41 @@ public class MainTabAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                MetarFragment metarFragment = new MetarFragment();
-                mPageReferenceMap.put(position, metarFragment);
-                return metarFragment;
+                return new MetarFragment();
             case 1:
-                TafFragment tafFragment = new TafFragment();
-                mPageReferenceMap.put(position, tafFragment);
-                return tafFragment;
+
+                return new TafFragment();
             default:
-                MetarFragment metarFragment2 = new MetarFragment();
-                mPageReferenceMap.put(position, metarFragment2);
-                return metarFragment2;
+                return null;
         }
     }
 
     @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        mPageReferenceMap.remove(position);
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment createdFragment = (Fragment) super.instantiateItem(container, position);
+        switch (position) {
+            case 0:
+                metarFragment = (MetarFragment) createdFragment;
+                break;
+            case 1:
+                tafFragment = (TafFragment) createdFragment;
+                break;    
+        }
+        return createdFragment;
     }
+
+    public void updateMetarFragmentUi(String rawMetar) {
+        if (metarFragment != null) {
+            metarFragment.updateViews(rawMetar);
+        }
+    }
+
+    public void updateTafFragmentUi(String rawTaf) {
+        if (tafFragment != null) {
+            tafFragment.updateViews(rawTaf);
+        }
+    }
+
 
     @Override
     public int getCount() {
@@ -66,13 +81,5 @@ public class MainTabAdapter extends FragmentStatePagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         return tabNames[position];
-    }
-
-    public MetarFragment getMetarFragment(int position) {
-        return (MetarFragment) mPageReferenceMap.get(position);
-    }
-
-    public TafFragment geTafFragment(int position) {
-        return (TafFragment) mPageReferenceMap.get(position);
     }
 }

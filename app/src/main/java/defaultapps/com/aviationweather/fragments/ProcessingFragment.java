@@ -5,67 +5,69 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 
-import defaultapps.com.aviationweather.controllers.MainController;
+import defaultapps.com.aviationweather.controllers.MetarController;
+import defaultapps.com.aviationweather.controllers.TafController;
 import defaultapps.com.aviationweather.models.metar.METAR;
 import defaultapps.com.aviationweather.models.taf.TAF;
 import defaultapps.com.aviationweather.views.MainView;
+import defaultapps.com.aviationweather.views.MetarView;
+import defaultapps.com.aviationweather.views.TafView;
 
 /**
  * Created on 2/2/2017.
  */
 
-public class ProcessingFragment extends Fragment implements MainController.OnFinishDownloading, SearchView.OnQueryTextListener {
+public class ProcessingFragment extends Fragment implements MetarView, TafView {
 
     private MainView mainView;
-    private METAR metar;
-    private TAF taf;
-    private MainController mainController;
+    private String metar;
+    private String taf;
+    private MetarController metarController;
+    private TafController tafController;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        mainController = new MainController(this);
+        metarController = new MetarController(this);
+        tafController = new TafController(this);
+
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (metar != null) {
-            mainView.updateMetarUi(metar.getRawReport());
+            mainView.updateMetarUi(metar);
         } else if (taf != null) {
-            mainView.updateTafUi(taf.getRawReport());
+            mainView.updateTafUi(taf);
         }
     }
 
     public void setMainView(MainView mainView) { this.mainView = mainView; }
 
 
+
+
     @Override
-    public void downloadFinishedMetar(METAR metar) {
-        this.metar = metar;
+    public void updateRawMetar(String rawMetar) {
+        metar = rawMetar;
         if (mainView != null) {
-            mainView.updateMetarUi(metar.getRawReport());
+            mainView.updateMetarUi(rawMetar);
         }
     }
 
     @Override
-    public void downloadFinishedTaf(TAF taf) {
-        this.taf = taf;
+    public void updateRawTaf(String rawTaf) {
+        taf = rawTaf;
         if (mainView != null) {
-            mainView.updateTafUi(taf.getRawReport());
+            mainView.updateTafUi(rawTaf);
         }
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String query) {
-        mainController.getTaf(query);
-        mainController.getMetar(query);
-        return true;
+    public void submitQuery(String query) {
+        metarController.updateMetar(query);
+        tafController.updateTaf(query);
     }
 
-    @Override
-    public boolean onQueryTextChange(String newText) {
-        return false;
-    }
 }

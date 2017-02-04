@@ -34,11 +34,18 @@ public class TafFragment extends Fragment implements TafView {
     SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+    }
+
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (savedInstanceState != null) {
+                if (savedInstanceState != null) {
             rawTaf.setText(savedInstanceState.getString("rawTaf"));
         }
+
 
     }
 
@@ -46,6 +53,7 @@ public class TafFragment extends Fragment implements TafView {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_taf, container, false);
         unbinder = ButterKnife.bind(this, rootView);
+
 
         tafController = new TafController(this);
         return rootView;

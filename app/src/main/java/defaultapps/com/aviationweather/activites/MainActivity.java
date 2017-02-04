@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.adapters.MainTabAdapter;
-import defaultapps.com.aviationweather.controllers.MainController;
 import defaultapps.com.aviationweather.fragments.ProcessingFragment;
 import defaultapps.com.aviationweather.miscs.Utils;
 import defaultapps.com.aviationweather.views.MainView;
@@ -39,9 +38,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @BindView(R.id.view_pager)
     ViewPager mainPager;
-
-    private MainController mainController;
-
 
 
     @Override
@@ -74,25 +70,37 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         // Retrieve the MainView and plug it into SearchManager
-        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final MenuItem searchItem = menu.findItem(R.id.action_search);
         Utils.setMenuIcon(searchItem, MaterialIcons.md_search);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
-        searchView.setOnQueryTextListener(processingFragment);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                processingFragment.submitQuery(query);
+                searchView.setIconified(true);
+                searchItem.collapseActionView();
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 
     @Override
     public void updateMetarUi(String metarRaw) {
-        mainTabAdapter.getMetarFragment(0).updateViews(metarRaw);
-
+        mainTabAdapter.updateMetarFragmentUi(metarRaw);
     }
 
     @Override
     public void updateTafUi(String tafRaw) {
-        mainTabAdapter.geTafFragment(1).updateViews(tafRaw);
+        mainTabAdapter.updateTafFragmentUi(tafRaw);
     }
 
 

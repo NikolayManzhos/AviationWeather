@@ -21,7 +21,7 @@ public class MyApplication extends Application {
     private static AviationWeatherAPI aviationWeatherAPI;
     private Retrofit retrofit;
 
-    private String baseUrl = "https://avwx.rest/";
+    private final String baseUrl = "https://avwx.rest/";
 
     @Override
     public void onCreate() {
