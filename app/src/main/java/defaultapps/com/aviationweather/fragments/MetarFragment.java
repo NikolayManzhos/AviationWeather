@@ -1,5 +1,6 @@
 package defaultapps.com.aviationweather.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,15 +14,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
-import defaultapps.com.aviationweather.controllers.MetarController;
-import defaultapps.com.aviationweather.views.MetarView;
 
 
 /**
  * Created on 2/1/2017.
  */
 
-public class MetarFragment extends Fragment implements MetarView {
+public class MetarFragment extends Fragment{
 
     private Unbinder unbinder;
 
@@ -59,12 +58,6 @@ public class MetarFragment extends Fragment implements MetarView {
         });
 
         return rootView;
-    }
-
-    @Override
-    public void updateRawMetar(String rawMetar) {
-        updateViews(rawMetar);
-        refreshLayout.setRefreshing(false);
     }
 
     public void updateViews(String rawMetar) {

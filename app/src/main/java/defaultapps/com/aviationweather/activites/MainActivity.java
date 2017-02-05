@@ -1,6 +1,7 @@
 package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
+import android.content.Context;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -22,7 +23,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.adapters.MainTabAdapter;
+import defaultapps.com.aviationweather.fragments.MetarFragment;
 import defaultapps.com.aviationweather.fragments.ProcessingFragment;
+import defaultapps.com.aviationweather.fragments.TafFragment;
 import defaultapps.com.aviationweather.miscs.Utils;
 import defaultapps.com.aviationweather.views.MainView;
 
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     private final String TAG = "MainActivity";
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +69,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (processingFragment == null) {
             processingFragment = new ProcessingFragment();
             fragmentManager.beginTransaction().add(processingFragment, "proc").commit();
-            processingFragment.setMainView(this);
             Log.i(TAG, "processingFragment == null");
-        } else {
-            processingFragment.setMainView(this);
         }
+        processingFragment.setMainView(this);
+
+
 
     }
 
@@ -87,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                processingFragment.setFragments((MetarFragment) mainTabAdapter.getFragment(0), (TafFragment) mainTabAdapter.getFragment(1));
                 processingFragment.submitQuery(query);
                 searchView.setIconified(true);
                 searchItem.collapseActionView();
@@ -99,16 +104,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
         return true;
-    }
-
-    @Override
-    public void updateMetarUi(String metarRaw) {
-        mainTabAdapter.updateMetarFragmentUi(metarRaw);
-    }
-
-    @Override
-    public void updateTafUi(String tafRaw) {
-        mainTabAdapter.updateTafFragmentUi(tafRaw);
     }
 
     @Override

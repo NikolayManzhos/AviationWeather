@@ -60,15 +60,15 @@ public class MainTabAdapter extends FragmentPagerAdapter {
         return createdFragment;
     }
 
-    public void updateMetarFragmentUi(String rawMetar) {
-        if (metarFragment != null) {
-            metarFragment.updateViews(rawMetar);
-        }
-    }
 
-    public void updateTafFragmentUi(String rawTaf) {
-        if (tafFragment != null) {
-            tafFragment.updateViews(rawTaf);
+    public Fragment getFragment(int position) {
+        switch (position) {
+            case 0:
+                return metarFragment;
+            case 1:
+                return tafFragment;
+            default:
+                return metarFragment;
         }
     }
 

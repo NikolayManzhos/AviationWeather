@@ -6,6 +6,7 @@ import android.content.Context;
 import com.google.gson.annotations.Expose;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.MaterialModule;
+import com.squareup.leakcanary.LeakCanary;
 
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +38,13 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            // This process is dedicated to LeakCanary for heap analysis.
+            // You should not init your app in this process.
+            return;
+        }
+        LeakCanary.install(this);
+        // Normal app init code...
         Iconify.with(new MaterialModule());
         mContext = getApplicationContext();
 

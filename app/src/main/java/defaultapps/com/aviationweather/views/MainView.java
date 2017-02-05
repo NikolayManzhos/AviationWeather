@@ -5,7 +5,5 @@ package defaultapps.com.aviationweather.views;
  */
 
 public interface MainView {
-    void updateMetarUi(String metarRaw);
-    void updateTafUi(String tafRaw);
     void showErrorSnackbar();
 }

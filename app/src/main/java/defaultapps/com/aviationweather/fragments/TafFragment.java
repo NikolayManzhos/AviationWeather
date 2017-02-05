@@ -14,13 +14,12 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.controllers.TafController;
-import defaultapps.com.aviationweather.views.TafView;
 
 /**
  * Created on 2/1/2017.
  */
 
-public class TafFragment extends Fragment implements TafView {
+public class TafFragment extends Fragment {
 
     private Unbinder unbinder;
 
@@ -65,11 +64,6 @@ public class TafFragment extends Fragment implements TafView {
         unbinder.unbind();
     }
 
-    @Override
-    public void updateRawTaf(String tafRaw) {
-        updateViews(tafRaw);
-        swipeRefreshLayout.setRefreshing(false);
-    }
 
     public void updateViews(String tafRaw) {
         if (rawTaf != null) {

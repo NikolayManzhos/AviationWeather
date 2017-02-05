@@ -2,10 +2,10 @@ package defaultapps.com.aviationweather.controllers;
 
 import android.util.Log;
 
+import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnWrongCodeCallback;
 import defaultapps.com.aviationweather.models.metar.METAR;
 import defaultapps.com.aviationweather.miscs.MyApplication;
-import defaultapps.com.aviationweather.views.MetarView;
 import retrofit2.Call;
 import retrofit2.Callback;
 
@@ -15,15 +15,15 @@ import retrofit2.Callback;
 
 public class MetarController {
 
-    private MetarView metarView;
     private METAR metar;
     private String rawMetar;
 
     private OnWrongCodeCallback onWrongCodeCallback;
+    private OnSuccesMetarCallback onSuccesMetarCallback;
 
-    public MetarController(MetarView metarView, OnWrongCodeCallback onWrongCodeCallback) {
-        this.metarView = metarView;
+    public MetarController(OnWrongCodeCallback onWrongCodeCallback, OnSuccesMetarCallback onSuccesMetarCallback) {
         this.onWrongCodeCallback = onWrongCodeCallback;
+        this.onSuccesMetarCallback = onSuccesMetarCallback;
     }
 
     public void updateMetar(String airportCode) {
@@ -33,7 +33,7 @@ public class MetarController {
                 metar = response.body();
                 if (metar.getError() == null) {
                     rawMetar = metar.getRawReport();
-                    metarView.updateRawMetar(rawMetar);
+                    onSuccesMetarCallback.rawMetarSuccess(rawMetar);
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());
                     onWrongCodeCallback.wrongAirportCode();
