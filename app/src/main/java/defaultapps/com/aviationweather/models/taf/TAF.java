@@ -37,6 +37,9 @@ public class TAF {
     @SerializedName("Units")
     @Expose
     private Units units;
+    @SerializedName("Error")
+    @Expose
+    private String error;
 
     public List<Forecast> getForecast() {
         return forecast;
@@ -117,5 +120,9 @@ public class TAF {
     public void setUnits(Units units) {
         this.units = units;
     }
+
+    public String getError() { return error; }
+
+    public void setError(String error) { this.error = error; }
 
 }

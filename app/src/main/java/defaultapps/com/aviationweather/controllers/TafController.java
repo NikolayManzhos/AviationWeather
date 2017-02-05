@@ -1,5 +1,7 @@
 package defaultapps.com.aviationweather.controllers;
 
+import android.util.Log;
+
 import defaultapps.com.aviationweather.models.taf.TAF;
 import defaultapps.com.aviationweather.miscs.MyApplication;
 import defaultapps.com.aviationweather.views.TafView;
@@ -27,8 +29,12 @@ public class TafController {
             @Override
             public void onResponse(Call<TAF> call, Response<TAF> response) {
                 tafModel = response.body();
-                tafRaw = tafModel.getRawReport();
-                tafView.updateRawTaf(tafRaw);
+                if (tafModel.getError() == null) {
+                    tafRaw = tafModel.getRawReport();
+                    tafView.updateRawTaf(tafRaw);
+                } else {
+                    Log.i(TafController.class.getName(), tafModel.getError());
+                }
 
             }
 

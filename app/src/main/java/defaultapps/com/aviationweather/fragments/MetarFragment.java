@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.controllers.MetarController;
-import defaultapps.com.aviationweather.views.MainView;
 import defaultapps.com.aviationweather.views.MetarView;
 
 
@@ -33,13 +31,7 @@ public class MetarFragment extends Fragment implements MetarView {
     @BindView(R.id.text_view_raw_metar)
     TextView rawMetar;
 
-    public MetarController metarController;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -56,15 +48,12 @@ public class MetarFragment extends Fragment implements MetarView {
         View rootView = inflater.inflate(R.layout.fragment_metar, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-        metarController = new MetarController(this);
 
 
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (metarController.metar != null) {
-                    metarController.updateMetar(metarController.metar.getStation());
-                }
+                refreshLayout.setRefreshing(false);
 
             }
         });

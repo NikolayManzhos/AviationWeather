@@ -3,12 +3,10 @@ package defaultapps.com.aviationweather.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
 
 import defaultapps.com.aviationweather.controllers.MetarController;
 import defaultapps.com.aviationweather.controllers.TafController;
-import defaultapps.com.aviationweather.models.metar.METAR;
-import defaultapps.com.aviationweather.models.taf.TAF;
+import defaultapps.com.aviationweather.interfaces.OnWrongCodeCallback;
 import defaultapps.com.aviationweather.views.MainView;
 import defaultapps.com.aviationweather.views.MetarView;
 import defaultapps.com.aviationweather.views.TafView;
@@ -17,7 +15,7 @@ import defaultapps.com.aviationweather.views.TafView;
  * Created on 2/2/2017.
  */
 
-public class ProcessingFragment extends Fragment implements MetarView, TafView {
+public class ProcessingFragment extends Fragment implements MetarView, TafView, OnWrongCodeCallback {
 
     private MainView mainView;
     private String metar;
@@ -29,14 +27,15 @@ public class ProcessingFragment extends Fragment implements MetarView, TafView {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-        metarController = new MetarController(this);
-        tafController = new TafController(this);
+
 
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        metarController = new MetarController(this, this);
+        tafController = new TafController(this);
         if (metar != null) {
             mainView.updateMetarUi(metar);
         } else if (taf != null) {
@@ -70,4 +69,8 @@ public class ProcessingFragment extends Fragment implements MetarView, TafView {
         tafController.updateTaf(query);
     }
 
+    @Override
+    public void wrongAirportCode() {
+        mainView.showErrorSnackbar();
+    }
 }

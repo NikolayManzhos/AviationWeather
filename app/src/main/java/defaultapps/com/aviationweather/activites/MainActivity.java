@@ -1,6 +1,7 @@
 package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -9,9 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.view.View;
 
 
 import com.joanzapata.iconify.fonts.MaterialIcons;
@@ -39,6 +41,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
     @BindView(R.id.view_pager)
     ViewPager mainPager;
 
+    @BindView(R.id.activity_main)
+    View parentView;
+
+    private final String TAG = "MainActivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +56,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         setSupportActionBar(toolbar);
 
-        if (mainPager != null) {
-            mainPager.setAdapter(mainTabAdapter = new MainTabAdapter(getSupportFragmentManager()));
-            mainTab.setupWithViewPager(mainPager);
-        }
+        mainPager.setAdapter(mainTabAdapter = new MainTabAdapter(getSupportFragmentManager()));
+        mainTab.setupWithViewPager(mainPager);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         processingFragment = (ProcessingFragment) fragmentManager.findFragmentByTag("proc");
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         if (processingFragment == null) {
             processingFragment = new ProcessingFragment();
             fragmentManager.beginTransaction().add(processingFragment, "proc").commit();
+            processingFragment.setMainView(this);
+            Log.i(TAG, "processingFragment == null");
+        } else {
             processingFragment.setMainView(this);
         }
 
@@ -103,11 +111,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainTabAdapter.updateTafFragmentUi(tafRaw);
     }
 
+    @Override
+    public void showErrorSnackbar() {
+        Log.i(TAG, "SNACK");
+        Utils.showSnackbar(mainPager, "Wrong airport code.");
+    }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-//        getSupportFragmentManager().putFragment(outState, "forecast", getSupportFragmentManager().findFragmentByTag("forecast"));
+        getSupportFragmentManager().putFragment(outState, "proc", getSupportFragmentManager().findFragmentByTag("proc"));
     }
 }

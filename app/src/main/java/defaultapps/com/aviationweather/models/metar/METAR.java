@@ -64,6 +64,9 @@ public class METAR {
     @SerializedName("Wind-Speed")
     @Expose
     private String windSpeed;
+    @SerializedName("Error")
+    @Expose
+    private String error;
     @SerializedName("Wind-Variable-Dir")
     @Expose
     private List<Object> windVariableDir = null;
@@ -227,5 +230,9 @@ public class METAR {
     public void setWindVariableDir(List<Object> windVariableDir) {
         this.windVariableDir = windVariableDir;
     }
+
+    public void setError(String error) { this.error = error; }
+
+    public String getError() { return error;}
 
 }
