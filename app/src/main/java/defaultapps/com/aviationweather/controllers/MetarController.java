@@ -3,7 +3,7 @@ package defaultapps.com.aviationweather.controllers;
 import android.util.Log;
 
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
-import defaultapps.com.aviationweather.interfaces.OnWrongCodeCallback;
+import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.models.metar.METAR;
 import defaultapps.com.aviationweather.miscs.MyApplication;
 import retrofit2.Call;
@@ -18,11 +18,11 @@ public class MetarController {
     private METAR metar;
     private String rawMetar;
 
-    private OnWrongCodeCallback onWrongCodeCallback;
+    private OnErrorCallback onErrorCallback;
     private OnSuccesMetarCallback onSuccesMetarCallback;
 
-    public MetarController(OnWrongCodeCallback onWrongCodeCallback, OnSuccesMetarCallback onSuccesMetarCallback) {
-        this.onWrongCodeCallback = onWrongCodeCallback;
+    public MetarController(OnErrorCallback onErrorCallback, OnSuccesMetarCallback onSuccesMetarCallback) {
+        this.onErrorCallback = onErrorCallback;
         this.onSuccesMetarCallback = onSuccesMetarCallback;
     }
 
@@ -36,13 +36,14 @@ public class MetarController {
                     onSuccesMetarCallback.rawMetarSuccess(rawMetar);
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());
-                    onWrongCodeCallback.wrongAirportCode();
+                    onErrorCallback.wrongAirportCode();
                 }
             }
 
             @Override
             public void onFailure(Call<METAR> call, Throwable t) {
-                Log.i(MetarController.class.getName(), "FAIL");
+                Log.i(MetarController.class.getName(), t.toString());
+                onErrorCallback.badConnection();
             }
         });
 

@@ -7,38 +7,8 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/colorPrimary"
-                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark"/>
-        </FrameLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"
-            app:tabMaxWidth="0dp"
-            app:tabBackground="@color/colorPrimary"
-            app:tabTextColor="@color/textColorDisabled"
-            app:tabSelectedTextColor="@color/textColorPrimary"/>
-        <android.support.v4.view.ViewPager
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
-
+    <include layout="@layout/app_bar" />
 
     <android.support.design.widget.NavigationView
         android:id="@+id/navigation_drawer"
@@ -64,7 +34,6 @@
                 android:id="@+id/navigation_drawer_recycler"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>

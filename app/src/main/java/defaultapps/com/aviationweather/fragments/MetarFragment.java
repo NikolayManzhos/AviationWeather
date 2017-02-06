@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -24,11 +26,15 @@ public class MetarFragment extends Fragment{
 
     private Unbinder unbinder;
 
-    @BindView(R.id.refresh_layout_metar)
-    SwipeRefreshLayout refreshLayout;
+    @BindView(R.id.metar_raw)
+    CardView metarRawCard;
+
 
     @BindView(R.id.text_view_raw_metar)
     TextView rawMetar;
+
+    @BindView(R.id.progress_bar_metar)
+    ProgressBar progressBar;
 
 
 
@@ -48,15 +54,6 @@ public class MetarFragment extends Fragment{
         unbinder = ButterKnife.bind(this, rootView);
 
 
-
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                refreshLayout.setRefreshing(false);
-
-            }
-        });
-
         return rootView;
     }
 
@@ -65,6 +62,16 @@ public class MetarFragment extends Fragment{
         if (this.rawMetar != null) {
             this.rawMetar.setText(rawMetar);
         }
+    }
+
+    public void showProgressBar() {
+        metarRawCard.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        metarRawCard.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override

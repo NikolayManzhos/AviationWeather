@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -23,13 +25,15 @@ public class TafFragment extends Fragment {
 
     private Unbinder unbinder;
 
-    public TafController tafController;
+    @BindView(R.id.taf_raw)
+    CardView tafRawCard;
+
+    @BindView(R.id.progress_bar_taf)
+    ProgressBar progressBar;
 
     @BindView(R.id.text_view_raw_taf)
     TextView rawTaf;
 
-    @BindView(R.id.refresh_layout_taf)
-    SwipeRefreshLayout swipeRefreshLayout;
 
 
     @Override
@@ -55,6 +59,16 @@ public class TafFragment extends Fragment {
         if (!rawTaf.getText().toString().equals("")) {
             outState.putString("rawTaf", rawTaf.getText().toString());
         }
+    }
+
+    public void showProgressBar() {
+        tafRawCard.setVisibility(View.GONE);
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    public void hideProgressBar() {
+        tafRawCard.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
     }
 
 

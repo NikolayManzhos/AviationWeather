@@ -4,6 +4,7 @@ package defaultapps.com.aviationweather.interfaces;
  * Created on 2/5/2017.
  */
 
-public interface OnWrongCodeCallback {
+public interface OnErrorCallback {
     void wrongAirportCode();
+    void badConnection();
 }

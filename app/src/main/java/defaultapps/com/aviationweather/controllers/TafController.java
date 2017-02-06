@@ -2,6 +2,7 @@ package defaultapps.com.aviationweather.controllers;
 
 import android.util.Log;
 
+import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
 import defaultapps.com.aviationweather.models.taf.TAF;
 import defaultapps.com.aviationweather.miscs.MyApplication;
@@ -18,12 +19,14 @@ public class TafController {
     private TAF tafModel;
 
     private OnSuccessTafCallback onSuccessTafCallback;
+    private OnErrorCallback onErrorCallback;
 
 
     private String tafRaw;
 
-    public TafController( OnSuccessTafCallback onSuccessTafCallback) {
+    public TafController( OnSuccessTafCallback onSuccessTafCallback, OnErrorCallback onErrorCallback) {
         this.onSuccessTafCallback = onSuccessTafCallback;
+        this.onErrorCallback = onErrorCallback;
     }
 
     public void updateTaf(String airportCode) {
@@ -36,13 +39,14 @@ public class TafController {
                     onSuccessTafCallback.rawTafSuccess(tafRaw);
                 } else {
                     Log.i(TafController.class.getName(), tafModel.getError());
+                    onErrorCallback.wrongAirportCode();
                 }
 
             }
 
             @Override
             public void onFailure(Call<TAF> call, Throwable t) {
-
+                onErrorCallback.badConnection();
             }
         });
     }
