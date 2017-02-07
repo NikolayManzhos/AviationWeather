@@ -27,7 +27,7 @@ public class Utils {
                         .colorRes(R.color.textColorPrimary)
                         .actionBarSize());
     }
-
+    
     public static void showSnackbar(View parentView, String message) {
         final Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_LONG);
         snackbar.setAction(MyApplication.getAppContext().getResources().getString(R.string.dismiss_snackbar), new View.OnClickListener() {

@@ -3,6 +3,8 @@ package defaultapps.com.aviationweather.miscs;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.Set;
+
 /**
  * Created on 2/6/2017.
  */
@@ -12,6 +14,7 @@ public class PreferencesManager {
     private final String FIRST_TIME_USER = "firstTime";
     private final String SAVED_METAR = "savedMetar";
     private final String SAVED_TAF = "savedTaf";
+    private final String FAVORITE_AIRPORTS = "favoriteAirports";
 
 
     private SharedPreferences preferences;
@@ -58,5 +61,13 @@ public class PreferencesManager {
 
     public void setSavedTaf(String tafJson) {
         preferences.edit().putString(SAVED_TAF, tafJson).apply();
+    }
+
+    public Set<String> getFavoriteAirports() {
+        return preferences.getStringSet(FAVORITE_AIRPORTS, null);
+    }
+
+    public void setFavoriteAirports(Set<String> favoriteAirports) {
+        preferences.edit().putStringSet(FAVORITE_AIRPORTS, favoriteAirports).apply();
     }
 }

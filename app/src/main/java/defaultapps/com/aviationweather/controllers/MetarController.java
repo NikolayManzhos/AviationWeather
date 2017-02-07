@@ -15,11 +15,12 @@ import retrofit2.Callback;
 
 public class MetarController {
 
-    private METAR metar;
+    public METAR metar;
     private String rawMetar;
 
     private OnErrorCallback onErrorCallback;
     private OnSuccesMetarCallback onSuccesMetarCallback;
+
 
     public MetarController(OnErrorCallback onErrorCallback, OnSuccesMetarCallback onSuccesMetarCallback) {
         this.onErrorCallback = onErrorCallback;

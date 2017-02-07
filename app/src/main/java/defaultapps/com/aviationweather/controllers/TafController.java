@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public class TafController {
 
-    private TAF tafModel;
+    public TAF tafModel;
 
     private OnSuccessTafCallback onSuccessTafCallback;
     private OnErrorCallback onErrorCallback;
@@ -41,7 +41,6 @@ public class TafController {
                     Log.i(TafController.class.getName(), tafModel.getError());
                     onErrorCallback.wrongAirportCode();
                 }
-
             }
 
             @Override

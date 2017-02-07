@@ -45,6 +45,8 @@ public class MetarFragment extends Fragment{
         if (savedInstanceState != null) {
             String saved = savedInstanceState.getString("rawMetar");
             rawMetar.setText(saved);
+            if (savedInstanceState.getInt("progressBarState") == View.VISIBLE) {
+            }
         }
     }
 
@@ -53,7 +55,6 @@ public class MetarFragment extends Fragment{
         View rootView = inflater.inflate(R.layout.fragment_metar, container, false);
         unbinder = ButterKnife.bind(this, rootView);
 
-
         return rootView;
     }
 
@@ -61,6 +62,7 @@ public class MetarFragment extends Fragment{
 //        Log.i(MetarFragment.class.getName(), rawMetar);
         if (this.rawMetar != null) {
             this.rawMetar.setText(rawMetar);
+            hideProgressBar();
         }
     }
 
@@ -80,6 +82,7 @@ public class MetarFragment extends Fragment{
         if (!rawMetar.getText().toString().equals("")) {
             outState.putString("rawMetar", rawMetar.getText().toString());
         }
+        outState.putInt("progressBarState", progressBar.getVisibility());
 
     }
 

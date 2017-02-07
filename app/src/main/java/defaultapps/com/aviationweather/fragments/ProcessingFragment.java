@@ -3,6 +3,7 @@ package defaultapps.com.aviationweather.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import defaultapps.com.aviationweather.controllers.MetarController;
 import defaultapps.com.aviationweather.controllers.TafController;
@@ -18,13 +19,13 @@ import defaultapps.com.aviationweather.views.MainView;
 public class ProcessingFragment extends Fragment implements OnErrorCallback, OnSuccesMetarCallback, OnSuccessTafCallback {
 
     private MainView mainView;
-    private String metar;
-    private String taf;
     private MetarController metarController;
     private TafController tafController;
 
     private MetarFragment metarFragment;
     private TafFragment tafFragment;
+
+    private final String TAG = "ProcessingFragment";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,11 +36,8 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (metar != null) {
-            metarFragment.updateViews(metar);
-        } else if (taf != null) {
-            tafFragment.updateViews(taf);
-        }
+        metarController = new MetarController(this, this);
+        tafController = new TafController(this, this);
     }
 
     public void setMainView(MainView mainView) { this.mainView = mainView; }
@@ -54,22 +52,18 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     public void setFragments(MetarFragment metarFragment, TafFragment tafFragment) {
         this.metarFragment = metarFragment;
         this.tafFragment = tafFragment;
-        metarController = new MetarController(this, this);
-        tafController = new TafController(this, this);
     }
 
     @Override
     public void rawMetarSuccess(String rawMetar) {
-        metar = rawMetar;
         metarFragment.updateViews(rawMetar);
-        metarFragment.hideProgressBar();
+        mainView.showFavoriteButton();
     }
 
     @Override
     public void rawTafSuccess(String rawTaf) {
-        taf = rawTaf;
         tafFragment.updateViews(rawTaf);
-        tafFragment.hideProgressBar();
+        mainView.showFavoriteButton();
     }
 
     @Override
@@ -77,11 +71,13 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         mainView.showErrorSnackbar();
         metarFragment.hideProgressBar();
         tafFragment.hideProgressBar();
+        mainView.hideFavoriteButton();
     }
 
     @Override
     public void badConnection() {
         tafFragment.hideProgressBar();
         metarFragment.hideProgressBar();
+        mainView.hideFavoriteButton();
     }
 }

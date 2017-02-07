@@ -34,16 +34,14 @@ public class TafFragment extends Fragment {
     @BindView(R.id.text_view_raw_taf)
     TextView rawTaf;
 
-
+    private final String PROGRESS_BAR_STATE = "progressBarState";
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-                if (savedInstanceState != null) {
+        if (savedInstanceState != null) {
             rawTaf.setText(savedInstanceState.getString("rawTaf"));
         }
-
-
     }
 
     @Override
@@ -59,6 +57,7 @@ public class TafFragment extends Fragment {
         if (!rawTaf.getText().toString().equals("")) {
             outState.putString("rawTaf", rawTaf.getText().toString());
         }
+        outState.putInt(PROGRESS_BAR_STATE, progressBar.getVisibility());
     }
 
     public void showProgressBar() {
@@ -82,7 +81,7 @@ public class TafFragment extends Fragment {
     public void updateViews(String tafRaw) {
         if (rawTaf != null) {
             rawTaf.setText(tafRaw);
+            hideProgressBar();
         }
-
     }
 }
