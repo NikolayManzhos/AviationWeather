@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private MainTabAdapter mainTabAdapter;
     private FavoritesAdapter favoritesAdapter;
+    private MenuItem refreshItem;
     private ProcessingFragment processingFragment;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
@@ -81,9 +83,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        favFloatingActionButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_favorite).colorRes(R.color.textColorPrimary));
-        hideFavoriteButton();
-
         setSupportActionBar(toolbar);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, (DrawerLayout) parentView, toolbar, R.string.drawer_open, R.string.drawer_close);
         ((DrawerLayout) parentView).addDrawerListener(actionBarDrawerToggle);
@@ -99,10 +98,14 @@ public class MainActivity extends AppCompatActivity implements MainView {
         } else {
             favAirports = new HashSet<>();
         }
+
         favoritesAdapter = new FavoritesAdapter(favAirports);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
         recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         processingFragment = (ProcessingFragment) fragmentManager.findFragmentByTag("proc");
@@ -112,6 +115,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
             Log.i(TAG, "processingFragment == null");
         }
         processingFragment.setMainView(this);
+
+        favFloatingActionButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_favorite).colorRes(R.color.textColorPrimary));
+        if (processingFragment.getCurrentAirCode() != null && favAirports.contains(processingFragment.getCurrentAirCode())) {
+            showFavoriteButton();
+        } else {
+            hideFavoriteButton();
+        }
 
     }
 
@@ -125,8 +135,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
 
-        MenuItem refreshItem = menu.findItem(R.id.action_refresh);
+        refreshItem = menu.findItem(R.id.action_refresh);
         Utils.setMenuIcon(refreshItem, MaterialIcons.md_refresh);
+        refreshItem.setVisible(false);
 
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -153,6 +164,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
+                if (processingFragment.getCurrentAirCode() != null) {
+                    processingFragment.submitQuery(processingFragment.getCurrentAirCode());
+                }
                 return false;
             }
         });
@@ -171,9 +185,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
         favFloatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (processingFragment.getCurrentAirCode() != null) {
+                    PreferencesManager.get().setFavoriteAirport(processingFragment.getCurrentAirCode());
+                }
+                hideFavoriteButton();
             }
         });
+
     }
 
     @Override

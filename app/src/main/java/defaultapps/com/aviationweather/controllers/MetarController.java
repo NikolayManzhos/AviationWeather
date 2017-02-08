@@ -2,6 +2,9 @@ package defaultapps.com.aviationweather.controllers;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.models.metar.METAR;
@@ -15,7 +18,7 @@ import retrofit2.Callback;
 
 public class MetarController {
 
-    public METAR metar;
+    public METAR metar = new METAR();
     private String rawMetar;
 
     private OnErrorCallback onErrorCallback;
@@ -27,14 +30,15 @@ public class MetarController {
         this.onSuccesMetarCallback = onSuccesMetarCallback;
     }
 
-    public void updateMetar(String airportCode) {
+    public void updateMetar(final String airportCode) {
         MyApplication.getWeatherAPI().getMetarData(airportCode).enqueue(new Callback<METAR>() {
             @Override
             public void onResponse(Call<METAR> call, retrofit2.Response<METAR> response) {
                 metar = response.body();
                 if (metar.getError() == null) {
-                    rawMetar = metar.getRawReport();
-                    onSuccesMetarCallback.rawMetarSuccess(rawMetar);
+                    ArrayList<String> data = new ArrayList<String>();
+                    data.add(metar.getRawReport());
+                    onSuccesMetarCallback.metarSuccess(metar.getStation(), data);
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());
                     onErrorCallback.wrongAirportCode();

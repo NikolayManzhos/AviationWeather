@@ -46,6 +46,7 @@ public class MetarFragment extends Fragment{
             String saved = savedInstanceState.getString("rawMetar");
             rawMetar.setText(saved);
             if (savedInstanceState.getInt("progressBarState") == View.VISIBLE) {
+                showProgressBar();
             }
         }
     }

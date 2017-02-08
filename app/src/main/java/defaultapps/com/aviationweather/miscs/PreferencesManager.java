@@ -3,6 +3,7 @@ package defaultapps.com.aviationweather.miscs;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -15,6 +16,7 @@ public class PreferencesManager {
     private final String SAVED_METAR = "savedMetar";
     private final String SAVED_TAF = "savedTaf";
     private final String FAVORITE_AIRPORTS = "favoriteAirports";
+    private final String CURRENT_AIR_CODE = "airCodeC";
 
 
     private SharedPreferences preferences;
@@ -67,7 +69,20 @@ public class PreferencesManager {
         return preferences.getStringSet(FAVORITE_AIRPORTS, null);
     }
 
-    public void setFavoriteAirports(Set<String> favoriteAirports) {
-        preferences.edit().putStringSet(FAVORITE_AIRPORTS, favoriteAirports).apply();
+    public void setFavoriteAirport(String favoriteAirport) {
+        Set<String> airports = new HashSet<>();
+        if (getFavoriteAirports() != null) {
+            airports.addAll(getFavoriteAirports());
+        }
+        airports.add(favoriteAirport);
+        preferences.edit().putStringSet(FAVORITE_AIRPORTS, airports).apply();
+    }
+
+    public String getCurrentAirCode() {
+        return preferences.getString(CURRENT_AIR_CODE, "none");
+    }
+
+    public void setCurrentAirCode(String airCode) {
+        preferences.edit().putString(CURRENT_AIR_CODE, airCode).apply();
     }
 }

@@ -33,7 +33,8 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/navigation_drawer_recycler"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>

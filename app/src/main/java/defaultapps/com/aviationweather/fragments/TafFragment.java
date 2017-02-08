@@ -41,6 +41,9 @@ public class TafFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             rawTaf.setText(savedInstanceState.getString("rawTaf"));
+            if (savedInstanceState.getInt(PROGRESS_BAR_STATE) == View.VISIBLE) {
+                showProgressBar();
+            }
         }
     }
 

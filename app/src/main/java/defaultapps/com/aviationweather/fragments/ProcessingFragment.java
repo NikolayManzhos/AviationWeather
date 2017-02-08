@@ -5,11 +5,14 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import defaultapps.com.aviationweather.controllers.MetarController;
 import defaultapps.com.aviationweather.controllers.TafController;
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
+import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.views.MainView;
 
 /**
@@ -19,11 +22,13 @@ import defaultapps.com.aviationweather.views.MainView;
 public class ProcessingFragment extends Fragment implements OnErrorCallback, OnSuccesMetarCallback, OnSuccessTafCallback {
 
     private MainView mainView;
-    private MetarController metarController;
-    private TafController tafController;
+    private MetarController metarController = new MetarController(this, this);
+    private TafController tafController = new TafController(this, this);
 
     private MetarFragment metarFragment;
     private TafFragment tafFragment;
+
+    private String currentAirCode;
 
     private final String TAG = "ProcessingFragment";
 
@@ -36,8 +41,9 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        metarController = new MetarController(this, this);
-        tafController = new TafController(this, this);
+        if (savedInstanceState != null) {
+            currentAirCode = savedInstanceState.getString("currentCode");
+        }
     }
 
     public void setMainView(MainView mainView) { this.mainView = mainView; }
@@ -55,14 +61,16 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     }
 
     @Override
-    public void rawMetarSuccess(String rawMetar) {
-        metarFragment.updateViews(rawMetar);
+    public void metarSuccess(String airCode, ArrayList<String> data) {
+        metarFragment.updateViews(data.get(0));
+        currentAirCode = airCode;
         mainView.showFavoriteButton();
     }
 
     @Override
-    public void rawTafSuccess(String rawTaf) {
-        tafFragment.updateViews(rawTaf);
+    public void tafSuccess(String airCode, ArrayList<String> data) {
+        tafFragment.updateViews(data.get(0));
+        currentAirCode = airCode;
         mainView.showFavoriteButton();
     }
 
@@ -79,5 +87,15 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         tafFragment.hideProgressBar();
         metarFragment.hideProgressBar();
         mainView.hideFavoriteButton();
+    }
+
+    public String getCurrentAirCode() {
+        return currentAirCode;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("currentCode", currentAirCode);
     }
 }

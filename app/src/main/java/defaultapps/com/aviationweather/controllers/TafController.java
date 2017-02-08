@@ -2,6 +2,8 @@ package defaultapps.com.aviationweather.controllers;
 
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
 import defaultapps.com.aviationweather.models.taf.TAF;
@@ -16,7 +18,7 @@ import retrofit2.Response;
 
 public class TafController {
 
-    public TAF tafModel;
+    public TAF tafModel = new TAF();
 
     private OnSuccessTafCallback onSuccessTafCallback;
     private OnErrorCallback onErrorCallback;
@@ -35,8 +37,9 @@ public class TafController {
             public void onResponse(Call<TAF> call, Response<TAF> response) {
                 tafModel = response.body();
                 if (tafModel.getError() == null) {
-                    tafRaw = tafModel.getRawReport();
-                    onSuccessTafCallback.rawTafSuccess(tafRaw);
+                    ArrayList<String> data = new ArrayList<String>();
+                    data.add(tafModel.getRawReport());
+                    onSuccessTafCallback.tafSuccess(tafModel.getStation(), data);
                 } else {
                     Log.i(TafController.class.getName(), tafModel.getError());
                     onErrorCallback.wrongAirportCode();
