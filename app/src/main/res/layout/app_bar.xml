@@ -21,11 +21,9 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/selectableItemBackground"
             app:tabMode="fixed"
             app:tabGravity="fill"
             app:tabMaxWidth="0dp"
-            app:tabBackground="@color/colorPrimary"
             app:tabTextColor="@color/textColorDisabled"
             app:tabSelectedTextColor="@color/textColorPrimary" />
     </android.support.design.widget.AppBarLayout>

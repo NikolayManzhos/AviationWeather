@@ -92,22 +92,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainPager.setAdapter(mainTabAdapter = new MainTabAdapter(getSupportFragmentManager()));
         mainTab.setupWithViewPager(mainPager);
 
-        //setup list of the favorite airports
-        if (PreferencesManager.get().getFavoriteAirports() != null) {
-            favAirports = PreferencesManager.get().getFavoriteAirports();
-        } else {
-            favAirports = new HashSet<>();
-        }
-
-        favoritesAdapter = new FavoritesAdapter(favAirports);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.setAdapter(favoritesAdapter);
-        recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
-
         FragmentManager fragmentManager = getSupportFragmentManager();
+        favAirports = (PreferencesManager.get().getFavoriteAirports() != null ? PreferencesManager.get().getFavoriteAirports() : new HashSet<String>());
         processingFragment = (ProcessingFragment) fragmentManager.findFragmentByTag("proc");
         if (processingFragment == null) {
             processingFragment = new ProcessingFragment();
@@ -122,6 +108,22 @@ public class MainActivity extends AppCompatActivity implements MainView {
         } else {
             hideFavoriteButton();
         }
+
+        //setup list of the favorite airports
+        favoritesAdapter = new FavoritesAdapter(favAirports);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        recyclerView.setAdapter(favoritesAdapter);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        favoritesAdapter.setListener(new FavoritesAdapter.Listener() {
+            @Override
+            public void onClick(String airportCode) {
+                processingFragment.submitQuery(airportCode);
+                ((DrawerLayout) parentView).closeDrawers();
+            }
+        });
 
     }
 

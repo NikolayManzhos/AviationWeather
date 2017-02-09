@@ -18,9 +18,10 @@ import defaultapps.com.aviationweather.R;
  * Created on 1/31/2017.
  */
 
-public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> implements View.OnClickListener {
+public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.ViewHolder> {
 
     private List<String> favAirports;
+    private Listener listener;
 
     public FavoritesAdapter(Set<String> favorite) {
         favAirports = new ArrayList<>(favorite);
@@ -42,20 +43,28 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(FavoritesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final FavoritesAdapter.ViewHolder holder, int position) {
         CardView cardView = holder.cardView;
         IconTextView iconTextView = (IconTextView) cardView.findViewById(R.id.fav_air_code);
         iconTextView.setText(favAirports.get(position));
-        cardView.setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(View view) {
-
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onClick(favAirports.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return favAirports.size();
+    }
+
+    public interface Listener {
+        void onClick(String airportCode);
+    }
+
+    public void setListener(Listener listener) {
+        this.listener = listener;
     }
 }
