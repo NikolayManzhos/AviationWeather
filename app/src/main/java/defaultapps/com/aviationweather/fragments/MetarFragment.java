@@ -6,16 +6,25 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.joanzapata.iconify.fonts.MaterialIcons;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
+import defaultapps.com.aviationweather.miscs.Utils;
 
 
 /**
@@ -26,12 +35,16 @@ public class MetarFragment extends Fragment{
 
     private Unbinder unbinder;
 
-    @BindView(R.id.metar_raw)
-    CardView metarRawCard;
+
+    @BindView(R.id.metar_data)
+    LinearLayout metarData;
 
 
     @BindView(R.id.text_view_raw_metar)
     TextView rawMetar;
+
+    @BindView(R.id.welcome_hint)
+    IconTextView welcomeHint;
 
     @BindView(R.id.progress_bar_metar)
     ProgressBar progressBar;
@@ -47,6 +60,8 @@ public class MetarFragment extends Fragment{
             rawMetar.setText(saved);
             if (savedInstanceState.getInt("progressBarState") == View.VISIBLE) {
                 showProgressBar();
+            } else {
+                displayDataBlock();
             }
         }
     }
@@ -68,13 +83,24 @@ public class MetarFragment extends Fragment{
     }
 
     public void showProgressBar() {
-        metarRawCard.setVisibility(View.GONE);
+        metarData.setVisibility(View.GONE);
+        welcomeHint.setVisibility(View.GONE);
         progressBar.setVisibility(View.VISIBLE);
     }
 
     public void hideProgressBar() {
-        metarRawCard.setVisibility(View.VISIBLE);
+        displayDataBlock();
         progressBar.setVisibility(View.GONE);
+    }
+
+    private void displayDataBlock() {
+        if (rawMetar.getText().toString().equals("")) {
+            metarData.setVisibility(View.GONE);
+            welcomeHint.setVisibility(View.VISIBLE);
+        } else {
+            metarData.setVisibility(View.VISIBLE);
+            welcomeHint.setVisibility(View.GONE);
+        }
     }
 
     @Override

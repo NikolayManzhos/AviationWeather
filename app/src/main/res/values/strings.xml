@@ -2,7 +2,7 @@
     <string name="app_name">AviationWeather</string>
     <string name="open_drawer">Open</string>
     <string name="close_drawer">Close</string>
-    <string name="latest_airports">Latest airports</string>
+    <string name="latest_airports">Favorite</string>
     <string name="search_hint">Type code here</string>
     <string name="dismiss_snackbar">DISMISS</string>
     <string-array name="tab_names">

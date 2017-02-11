@@ -7,5 +7,7 @@ package defaultapps.com.aviationweather.views;
 public interface MainView {
     void showFavoriteButton();
     void hideFavoriteButton();
+    void showRefreshButton();
+    void hideRefreshButton();
     void showErrorSnackbar();
 }

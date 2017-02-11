@@ -1,11 +1,7 @@
 package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
-import android.content.Context;
-import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -14,8 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.LinearSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -66,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
     View parentView;
 
     @BindView(R.id.fab_favorite)
-    FloatingActionButton favFloatingActionButton;
+    FloatingActionButton fabFavorite;
 
     @BindView(R.id.navigation_drawer_recycler)
     RecyclerView recyclerView;
@@ -102,8 +98,9 @@ public class MainActivity extends AppCompatActivity implements MainView {
         }
         processingFragment.setMainView(this);
 
-        favFloatingActionButton.setImageDrawable(new IconDrawable(this, MaterialIcons.md_favorite).colorRes(R.color.textColorPrimary));
-        if (processingFragment.getCurrentAirCode() != null && favAirports.contains(processingFragment.getCurrentAirCode())) {
+        //fab setup
+        fabFavorite.setImageDrawable(new IconDrawable(this, MaterialIcons.md_favorite).colorRes(R.color.textColorPrimary));
+        if (processingFragment.getCurrentAirCode() != null && !favAirports.contains(processingFragment.getCurrentAirCode())) {
             showFavoriteButton();
         } else {
             hideFavoriteButton();
@@ -112,11 +109,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
         //setup list of the favorite airports
         favoritesAdapter = new FavoritesAdapter(favAirports);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.setAdapter(favoritesAdapter);
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setAdapter(favoritesAdapter);
         favoritesAdapter.setListener(new FavoritesAdapter.Listener() {
             @Override
             public void onClick(String airportCode) {
@@ -139,7 +133,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         refreshItem = menu.findItem(R.id.action_refresh);
         Utils.setMenuIcon(refreshItem, MaterialIcons.md_refresh);
-        refreshItem.setVisible(false);
+        if (processingFragment.getCurrentAirCode() != null) {
+            showRefreshButton();
+        } else {
+            hideRefreshButton();
+        }
 
 
         final MenuItem searchItem = menu.findItem(R.id.action_search);
@@ -183,22 +181,43 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showFavoriteButton() {
-        favFloatingActionButton.setVisibility(View.VISIBLE);
-        favFloatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (processingFragment.getCurrentAirCode() != null) {
-                    PreferencesManager.get().setFavoriteAirport(processingFragment.getCurrentAirCode());
+        if (!favAirports.contains(processingFragment.getCurrentAirCode())) {
+            fabFavorite.setVisibility(View.VISIBLE);
+            fabFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (processingFragment.getCurrentAirCode() != null) {
+                        PreferencesManager.get().setFavoriteAirport(processingFragment.getCurrentAirCode());
+                        favAirports.add(processingFragment.getCurrentAirCode());
+                        favoritesAdapter.notifyDataSetChanged();
+                    }
+                    hideFavoriteButton();
                 }
-                hideFavoriteButton();
-            }
-        });
+            });
+        }
 
     }
 
     @Override
     public void hideFavoriteButton() {
-        favFloatingActionButton.setVisibility(View.INVISIBLE);
+        fabFavorite.setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void showRefreshButton() {
+        refreshItem.setVisible(true);
+        refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                processingFragment.submitQuery(processingFragment.getCurrentAirCode());
+                return false;
+            }
+        });
+    }
+
+    @Override
+    public void hideRefreshButton() {
+        refreshItem.setVisible(false);
     }
 
     @Override

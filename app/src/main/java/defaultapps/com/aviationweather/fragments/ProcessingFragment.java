@@ -65,6 +65,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         metarFragment.updateViews(data.get(0));
         currentAirCode = airCode;
         mainView.showFavoriteButton();
+        mainView.showRefreshButton();
     }
 
     @Override
@@ -72,6 +73,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         tafFragment.updateViews(data.get(0));
         currentAirCode = airCode;
         mainView.showFavoriteButton();
+        mainView.showRefreshButton();
     }
 
     @Override
@@ -80,6 +82,11 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         metarFragment.hideProgressBar();
         tafFragment.hideProgressBar();
         mainView.hideFavoriteButton();
+        if (getCurrentAirCode() != null) {
+            mainView.showRefreshButton();
+        } else {
+            mainView.hideRefreshButton();
+        }
     }
 
     @Override
@@ -87,6 +94,11 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         tafFragment.hideProgressBar();
         metarFragment.hideProgressBar();
         mainView.hideFavoriteButton();
+        if (getCurrentAirCode() != null) {
+            mainView.showRefreshButton();
+        } else {
+            mainView.hideRefreshButton();
+        }
     }
 
     public String getCurrentAirCode() {

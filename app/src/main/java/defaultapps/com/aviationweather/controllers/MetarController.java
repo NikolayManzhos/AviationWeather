@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
+import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.models.metar.METAR;
 import defaultapps.com.aviationweather.miscs.MyApplication;
 import retrofit2.Call;
@@ -39,6 +40,7 @@ public class MetarController {
                     ArrayList<String> data = new ArrayList<String>();
                     data.add(metar.getRawReport());
                     onSuccesMetarCallback.metarSuccess(metar.getStation(), data);
+                    PreferencesManager.get().setCurrentAirCode(metar.getStation());
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());
                     onErrorCallback.wrongAirportCode();
