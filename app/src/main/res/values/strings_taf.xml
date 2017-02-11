@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="taf_raw">Raw TAF</string>
+    <string name="taf_translated">Translated TAF</string>
+</resources>

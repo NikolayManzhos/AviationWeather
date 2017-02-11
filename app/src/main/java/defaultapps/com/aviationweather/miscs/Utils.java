@@ -4,7 +4,6 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -30,6 +29,8 @@ public class Utils {
     
     public static void showSnackbar(View parentView, String message) {
         final Snackbar snackbar = Snackbar.make(parentView, message, Snackbar.LENGTH_LONG);
+        View snackView = snackbar.getView();
+        snackView.setBackgroundColor(MyApplication.getAppContext().getResources().getColor(R.color.colorPrimary));
         snackbar.setAction(MyApplication.getAppContext().getResources().getString(R.string.dismiss_snackbar), new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -3,21 +3,13 @@ package defaultapps.com.aviationweather.miscs;
 import android.app.Application;
 import android.content.Context;
 
-import com.google.gson.annotations.Expose;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.MaterialModule;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import defaultapps.com.aviationweather.api.AviationWeatherAPI;
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 

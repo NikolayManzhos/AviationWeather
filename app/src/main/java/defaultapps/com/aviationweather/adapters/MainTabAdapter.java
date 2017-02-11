@@ -3,11 +3,8 @@ package defaultapps.com.aviationweather.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.util.SparseArray;
 import android.view.ViewGroup;
 
-import java.util.HashMap;
 
 import defaultapps.com.aviationweather.R;
 import defaultapps.com.aviationweather.fragments.MetarFragment;
@@ -39,7 +36,6 @@ public class MainTabAdapter extends FragmentPagerAdapter {
             case 0:
                 return new MetarFragment();
             case 1:
-
                 return new TafFragment();
             default:
                 return null;

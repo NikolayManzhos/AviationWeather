@@ -3,7 +3,6 @@ package defaultapps.com.aviationweather.controllers;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;

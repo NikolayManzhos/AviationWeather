@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="HeaderFont">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/textColorDisabledDark</item>
+        <item name="android:typeface">monospace</item>
+    </style>
+
 </resources>

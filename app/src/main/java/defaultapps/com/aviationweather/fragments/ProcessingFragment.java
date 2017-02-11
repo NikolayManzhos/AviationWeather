@@ -93,9 +93,9 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     public void badConnection() {
         tafFragment.hideProgressBar();
         metarFragment.hideProgressBar();
-        mainView.hideFavoriteButton();
         if (getCurrentAirCode() != null) {
             mainView.showRefreshButton();
+            mainView.showFavoriteButton();
         } else {
             mainView.hideRefreshButton();
         }
