@@ -1,6 +1,8 @@
 package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
+import android.content.Context;
+import android.os.Vibrator;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -18,12 +20,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import butterknife.BindView;
@@ -88,12 +92,11 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainTab.setupWithViewPager(mainPager);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        favAirports = (PreferencesManager.get().getFavoriteAirports() != null ? PreferencesManager.get().getFavoriteAirports() : new HashSet<String>());
+        favAirports = (PreferencesManager.get().getFavoriteAirports() != null ? PreferencesManager.get().getFavoriteAirports() : new LinkedHashSet<String>());
         processingFragment = (ProcessingFragment) fragmentManager.findFragmentByTag("proc");
         if (processingFragment == null) {
             processingFragment = new ProcessingFragment();
             fragmentManager.beginTransaction().add(processingFragment, "proc").commit();
-            Log.i(TAG, "processingFragment == null");
         }
         processingFragment.setMainView(this);
 
@@ -115,6 +118,13 @@ public class MainActivity extends AppCompatActivity implements MainView {
             public void onClick(String airportCode) {
                 processingFragment.submitQuery(airportCode);
                 ((DrawerLayout) parentView).closeDrawers();
+            }
+
+            @Override
+            public void onLongClick(String airportCode) {
+                Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+                Vibrator vibrate = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
+                vibrate.vibrate(10);
             }
         });
 
@@ -204,14 +214,16 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showRefreshButton() {
-        refreshItem.setVisible(true);
-        refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                processingFragment.submitQuery(processingFragment.getCurrentAirCode());
-                return false;
-            }
-        });
+        if (refreshItem != null) {
+            refreshItem.setVisible(true);
+            refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem item) {
+                    processingFragment.submitQuery(processingFragment.getCurrentAirCode());
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

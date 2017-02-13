@@ -3,8 +3,14 @@ package defaultapps.com.aviationweather.miscs;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
+import com.google.gson.Gson;
+
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+import defaultapps.com.aviationweather.models.metar.METAR;
+import defaultapps.com.aviationweather.models.taf.TAF;
 
 /**
  * Created on 2/6/2017.
@@ -49,20 +55,32 @@ public class PreferencesManager {
         preferences.edit().putBoolean(FIRST_TIME_USER, firstTimeUser).apply();
     }
 
-    public String getSavedMetar() {
-        return preferences.getString(SAVED_METAR, "none");
+    public METAR getSavedMetar() {
+        Gson gson = new Gson();
+        if (!preferences.getString(SAVED_METAR, "none").equals("none")) {
+            return gson.fromJson(preferences.getString(SAVED_METAR, "none"), METAR.class);
+        } else {
+            return null;
+        }
     }
 
-    public void setSavedMetar(String metarJson) {
-        preferences.edit().putString(SAVED_METAR, metarJson).apply();
+    public void setSavedMetar(METAR metar) {
+        Gson gson = new Gson();
+        preferences.edit().putString(SAVED_METAR, gson.toJson(metar)).apply();
     }
 
-    public String getSavedTaf() {
-        return preferences.getString(SAVED_TAF, "none");
+    public TAF getSavedTaf() {
+        Gson gson = new Gson();
+        if (!preferences.getString(SAVED_TAF, "none").equals("none")) {
+            return gson.fromJson(preferences.getString(SAVED_TAF, "none"), TAF.class);
+        } else {
+            return null;
+        }
     }
 
-    public void setSavedTaf(String tafJson) {
-        preferences.edit().putString(SAVED_TAF, tafJson).apply();
+    public void setSavedTaf(TAF taf) {
+        Gson gson = new Gson();
+        preferences.edit().putString(SAVED_TAF, gson.toJson(taf)).apply();
     }
 
     public Set<String> getFavoriteAirports() {
@@ -70,7 +88,7 @@ public class PreferencesManager {
     }
 
     public void setFavoriteAirport(String favoriteAirport) {
-        Set<String> airports = new HashSet<>();
+        Set<String> airports = new LinkedHashSet<>();
         if (getFavoriteAirports() != null) {
             airports.addAll(getFavoriteAirports());
         }

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
+import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.models.taf.TAF;
 import defaultapps.com.aviationweather.miscs.MyApplication;
 import retrofit2.Call;
@@ -40,6 +41,7 @@ public class TafController {
                     ArrayList<String> data = new ArrayList<String>();
                     data.add(tafModel.getRawReport());
                     onSuccessTafCallback.tafSuccess(tafModel.getStation(), data);
+                    PreferencesManager.get().setSavedTaf(tafModel);
                 } else {
                     Log.i(TafController.class.getName(), tafModel.getError());
                     onErrorCallback.wrongAirportCode();

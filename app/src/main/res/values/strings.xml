@@ -4,6 +4,7 @@
     <string name="close_drawer">Close</string>
     <string name="latest_airports">Favorite</string>
     <string name="search_hint">Type code here</string>
+    <string name="place_holder">--</string>
     <string name="dismiss_snackbar">DISMISS</string>
     <string-array name="tab_names">
         <item>METAR</item>

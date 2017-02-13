@@ -53,6 +53,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
                 listener.onClick(favAirports.get(holder.getAdapterPosition()));
             }
         });
+        cardView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                listener.onLongClick(favAirports.get(holder.getAdapterPosition()));
+                return false;
+            }
+        });
     }
 
     @Override
@@ -62,6 +69,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     public interface Listener {
         void onClick(String airportCode);
+        void onLongClick(String airportCode);
     }
 
     public void setListener(Listener listener) {

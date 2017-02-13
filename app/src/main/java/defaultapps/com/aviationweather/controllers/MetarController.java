@@ -3,6 +3,7 @@ package defaultapps.com.aviationweather.controllers;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
@@ -19,7 +20,6 @@ import retrofit2.Callback;
 public class MetarController {
 
     public METAR metar = new METAR();
-    private String rawMetar;
 
     private OnErrorCallback onErrorCallback;
     private OnSuccesMetarCallback onSuccesMetarCallback;
@@ -36,10 +36,9 @@ public class MetarController {
             public void onResponse(Call<METAR> call, retrofit2.Response<METAR> response) {
                 metar = response.body();
                 if (metar.getError() == null) {
-                    ArrayList<String> data = new ArrayList<String>();
-                    data.add(metar.getRawReport());
-                    onSuccesMetarCallback.metarSuccess(metar.getStation(), data);
+                    onSuccesMetarCallback.metarSuccess(metar.getStation(), parseMetarModel(metar));
                     PreferencesManager.get().setCurrentAirCode(metar.getStation());
+                    PreferencesManager.get().setSavedMetar(metar);
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());
                     onErrorCallback.wrongAirportCode();
@@ -53,6 +52,19 @@ public class MetarController {
             }
         });
 
+    }
+
+    public List<String> parseMetarModel(METAR metar) {
+        List<String> data = new ArrayList<>();
+        data.add(metar.getRawReport());
+        data.add(metar.getTranslations().getAltimeter());
+        data.add(metar.getTranslations().getClouds());
+        data.add(metar.getTranslations().getDewpoint());
+        data.add(metar.getTranslations().getTemperature());
+        data.add(metar.getTranslations().getVisibility());
+        data.add(metar.getTranslations().getWind());
+        data.add(metar.getTranslations().getOther());
+        return data;
     }
 
 

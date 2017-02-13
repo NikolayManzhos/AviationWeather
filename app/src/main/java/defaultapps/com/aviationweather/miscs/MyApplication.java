@@ -51,7 +51,7 @@ public class MyApplication extends Application {
 
     private OkHttpClient getOkHttpClient() {
         return new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS)
+                .connectTimeout(15, TimeUnit.SECONDS)
                 .build();
     }
 

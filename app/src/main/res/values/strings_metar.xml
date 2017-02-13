@@ -2,4 +2,11 @@
 <resources>
     <string name="metar_raw">Raw METAR</string>
     <string name="metar_translated">Translated METAR</string>
+    <string name="metar_altimeter">Altimeter  </string>
+    <string name="metar_clouds">Clouds  </string>
+    <string name="metar_dewpoint">Dewpoint  </string>
+    <string name="metar_temperature">Temperature  </string>
+    <string name="metar_visibility">Visibility  </string>
+    <string name="metar_wind">Wind  </string>
+    <string name="metar_other">Other  </string>
 </resources>

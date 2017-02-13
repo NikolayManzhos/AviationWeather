@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import defaultapps.com.aviationweather.controllers.MetarController;
 import defaultapps.com.aviationweather.controllers.TafController;
@@ -13,6 +14,8 @@ import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.miscs.PreferencesManager;
+import defaultapps.com.aviationweather.models.metar.METAR;
+import defaultapps.com.aviationweather.models.taf.TAF;
 import defaultapps.com.aviationweather.views.MainView;
 
 /**
@@ -32,6 +35,11 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
 
     private final String TAG = "ProcessingFragment";
 
+    private boolean isSavedStateNull;
+
+    private List<String> dataMetar;
+    private List<String> dataTaf;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +51,8 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             currentAirCode = savedInstanceState.getString("currentCode");
+        } else {
+            isSavedStateNull = true;
         }
     }
 
@@ -58,11 +68,29 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     public void setFragments(MetarFragment metarFragment, TafFragment tafFragment) {
         this.metarFragment = metarFragment;
         this.tafFragment = tafFragment;
+        if (isSavedStateNull) {
+            METAR metarSavedModel = PreferencesManager.get().getSavedMetar();
+            TAF tafSavedModel = PreferencesManager.get().getSavedTaf();
+            if (metarSavedModel != null) {
+                metarFragment.updateViews(metarController.parseMetarModel(metarSavedModel));
+            }
+            if (tafSavedModel != null) {
+            }
+            isSavedStateNull = false;
+        }
+        if (dataMetar != null) {
+            metarFragment.updateViews(dataMetar);
+            dataMetar = null;
+        }
+        if (dataTaf != null) {
+            tafFragment.updateViews(dataTaf.get(0));
+            dataTaf = null;
+        }
     }
 
     @Override
-    public void metarSuccess(String airCode, ArrayList<String> data) {
-        metarFragment.updateViews(data.get(0));
+    public void metarSuccess(String airCode, List<String> data) {
+        metarFragment.updateViews(data);
         currentAirCode = airCode;
         mainView.showFavoriteButton();
         mainView.showRefreshButton();

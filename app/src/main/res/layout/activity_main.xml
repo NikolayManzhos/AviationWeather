@@ -24,6 +24,7 @@
             android:layout_height="match_parent">
             <TextView
                 android:text="@string/latest_airports"
+                android:textColor="@color/textColorPrimary"
                 android:textSize="24sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
