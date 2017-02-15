@@ -3,6 +3,7 @@ package defaultapps.com.aviationweather.controllers;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.interfaces.OnSuccessTafCallback;
@@ -38,9 +39,7 @@ public class TafController {
             public void onResponse(Call<TAF> call, Response<TAF> response) {
                 tafModel = response.body();
                 if (tafModel.getError() == null) {
-                    ArrayList<String> data = new ArrayList<String>();
-                    data.add(tafModel.getRawReport());
-                    onSuccessTafCallback.tafSuccess(tafModel.getStation(), data);
+                    onSuccessTafCallback.tafSuccess(tafModel.getStation(), parseTafModel(tafModel));
                     PreferencesManager.get().setSavedTaf(tafModel);
                 } else {
                     Log.i(TafController.class.getName(), tafModel.getError());
@@ -53,5 +52,11 @@ public class TafController {
                 onErrorCallback.badConnection();
             }
         });
+    }
+
+    public List<String> parseTafModel(TAF tafModel) {
+        List<String> data = new ArrayList<>();
+        data.add(tafModel.getRawReport());
+        return data;
     }
 }

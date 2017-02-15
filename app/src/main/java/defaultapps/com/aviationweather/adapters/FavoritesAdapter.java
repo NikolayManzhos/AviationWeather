@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.joanzapata.iconify.widget.IconButton;
 import com.joanzapata.iconify.widget.IconTextView;
 
 import java.util.ArrayList;
@@ -43,23 +44,29 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(final FavoritesAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final FavoritesAdapter.ViewHolder holder, final int position) {
         CardView cardView = holder.cardView;
         IconTextView iconTextView = (IconTextView) cardView.findViewById(R.id.fav_air_code);
         iconTextView.setText(favAirports.get(position));
+        IconButton deleteButton = (IconButton) cardView.findViewById(R.id.fav_delete_button);
+        deleteButton.setText("{md-clear}");
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 listener.onClick(favAirports.get(holder.getAdapterPosition()));
             }
         });
-        cardView.setOnLongClickListener(new View.OnLongClickListener() {
+        deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
-                listener.onLongClick(favAirports.get(holder.getAdapterPosition()));
-                return false;
+            public void onClick(View v) {
+                int newPosition = holder.getAdapterPosition();
+                listener.onDeleteClick(favAirports.get(newPosition), newPosition);
+                favAirports.remove(newPosition);
+                notifyItemRemoved(newPosition);
+                notifyItemRangeChanged(newPosition, favAirports.size());
             }
         });
+
     }
 
     @Override
@@ -69,7 +76,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     public interface Listener {
         void onClick(String airportCode);
-        void onLongClick(String airportCode);
+        void onDeleteClick(String airportCode, int position);
     }
 
     public void setListener(Listener listener) {

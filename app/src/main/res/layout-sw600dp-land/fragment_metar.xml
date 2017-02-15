@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/metar_fragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:id="@+id/metar_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:clipToPadding="false"
+            android:visibility="gone">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:text="@string/metar_translated"
+                    android:textAppearance="@style/HeaderFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="2dp">
+                    <RelativeLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp">
+
+                        <TextView
+                            android:id="@+id/metar_data_altimeter"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:layout_marginStart="140dp"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_clouds"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_altimeter"
+                            android:layout_alignStart="@+id/metar_data_altimeter"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_dewpoint"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_clouds"
+                            android:layout_alignStart="@+id/metar_data_altimeter"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_temperature"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_dewpoint"
+                            android:layout_alignStart="@+id/metar_data_altimeter"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_visibility"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_temperature"
+                            android:layout_alignStart="@+id/metar_data_altimeter"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_wind"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_visibility"
+                            android:layout_alignStart="@+id/metar_data_altimeter"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/metar_data_other"
+                            android:text="@string/place_holder"
+                            android:textAppearance="@style/DataFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/metar_data_wind"
+                            android:layout_alignStart="@+id/metar_data_altimeter" />
+
+                        <TextView
+                            android:id="@+id/first"
+                            android:text="@string/metar_altimeter"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"/>
+
+                        <TextView
+                            android:id="@+id/second"
+                            android:text="@string/metar_clouds"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_altimeter" />
+
+                        <TextView
+                            android:id="@+id/third"
+                            android:text="@string/metar_dewpoint"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_clouds" />
+
+                        <TextView
+                            android:id="@+id/fourth"
+                            android:text="@string/metar_temperature"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_dewpoint" />
+
+                        <TextView
+                            android:id="@+id/fifth"
+                            android:text="@string/metar_visibility"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_temperature" />
+
+                        <TextView
+                            android:id="@+id/sixth"
+                            android:text="@string/metar_wind"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_visibility" />
+
+                        <TextView
+                            android:id="@+id/seventh"
+                            android:text="@string/metar_other"
+                            android:textAppearance="@style/AttrFont"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dp"
+                            android:layout_below="@+id/metar_data_wind" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    android:text="@string/metar_raw"
+                    android:textAppearance="@style/HeaderFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <android.support.v7.widget.CardView
+                    android:id="@+id/metar_raw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    app:cardElevation="2dp">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="12dp">
+                        <TextView
+                            android:id="@+id/text_view_raw_metar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <com.joanzapata.iconify.widget.IconTextView
+        android:id="@+id/welcome_hint"
+        android:text="Press {md-search} icon and type airport code."
+        android:textColor="@color/textColorDisabledDark"
+        android:textSize="40sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_gravity="center"/>
+
+    <ProgressBar
+        style="?android:attr/progressBarStyle"
+        android:id="@+id/progress_bar_metar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="center"/>
+
+</FrameLayout>

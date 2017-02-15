@@ -1,6 +1,7 @@
 package defaultapps.com.aviationweather;
 
 
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -31,6 +32,7 @@ import static android.support.test.espresso.action.ViewActions.click;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
+@LargeTest
 public class ExampleInstrumentedTest {
 
     private static final String AIRPORT_CODE = "UUDD";
@@ -40,7 +42,6 @@ public class ExampleInstrumentedTest {
 
     @Test
     public void useAppContext() throws Exception {
-        onData(withText(AIRPORT_CODE)).perform(click());
     }
 
 }

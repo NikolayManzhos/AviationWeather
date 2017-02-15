@@ -36,8 +36,8 @@ public class MetarController {
             public void onResponse(Call<METAR> call, retrofit2.Response<METAR> response) {
                 metar = response.body();
                 if (metar.getError() == null) {
-                    onSuccesMetarCallback.metarSuccess(metar.getStation(), parseMetarModel(metar));
                     PreferencesManager.get().setCurrentAirCode(metar.getStation());
+                    onSuccesMetarCallback.metarSuccess(metar.getStation(), parseMetarModel(metar));
                     PreferencesManager.get().setSavedMetar(metar);
                 } else {
                     Log.i(MetarController.class.getName(),metar.getError());

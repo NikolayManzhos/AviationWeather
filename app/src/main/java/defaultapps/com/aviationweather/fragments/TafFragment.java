@@ -12,10 +12,15 @@ import android.widget.TextView;
 
 import com.joanzapata.iconify.widget.IconTextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import defaultapps.com.aviationweather.R;
+import icepick.Icepick;
+import icepick.State;
 
 /**
  * Created on 2/1/2017.
@@ -24,6 +29,11 @@ import defaultapps.com.aviationweather.R;
 public class TafFragment extends Fragment {
 
     private Unbinder unbinder;
+    @State
+    ArrayList<String> data;
+
+    @State
+    int progressBarState;
 
     @BindView(R.id.taf_data)
     LinearLayout tafData;
@@ -37,14 +47,19 @@ public class TafFragment extends Fragment {
     @BindView(R.id.welcome_hint)
     IconTextView welcomeHint;
 
-    private final String PROGRESS_BAR_STATE = "progressBarState";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Icepick.restoreInstanceState(this, savedInstanceState);
+    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             rawTaf.setText(savedInstanceState.getString("rawTaf"));
-            if (savedInstanceState.getInt(PROGRESS_BAR_STATE) == View.VISIBLE) {
+            if (progressBarState == View.VISIBLE) {
                 showProgressBar();
             } else {
                 displayDataBlock();
@@ -62,10 +77,8 @@ public class TafFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (!rawTaf.getText().toString().equals("")) {
-            outState.putString("rawTaf", rawTaf.getText().toString());
-        }
-        outState.putInt(PROGRESS_BAR_STATE, progressBar.getVisibility());
+        progressBarState = progressBar.getVisibility();
+        Icepick.saveInstanceState(this, outState);
     }
 
     public void showProgressBar() {
@@ -97,9 +110,10 @@ public class TafFragment extends Fragment {
     }
 
 
-    public void updateViews(String tafRaw) {
+    public void updateViews(List<String> data) {
+        this.data = (ArrayList<String>) data;
         if (rawTaf != null) {
-            rawTaf.setText(tafRaw);
+            rawTaf.setText(data.get(0));
             hideProgressBar();
         }
     }

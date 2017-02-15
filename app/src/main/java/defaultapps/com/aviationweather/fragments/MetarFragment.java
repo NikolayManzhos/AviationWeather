@@ -35,6 +35,9 @@ public class MetarFragment extends Fragment{
     @State
     ArrayList<String> data;
 
+    @State
+    int progressBarState;
+
 
     @BindView(R.id.metar_data)
     LinearLayout metarData;
@@ -82,12 +85,11 @@ public class MetarFragment extends Fragment{
         super.onActivityCreated(savedInstanceState);
 
         if (savedInstanceState != null) {
-            if (savedInstanceState.getInt("progressBarState") == View.VISIBLE) {
-                showProgressBar();
-            } else if (data != null) {
+            if (data != null) {
                 updateViews(data);
-            } else {
-                displayDataBlock();
+            }
+            if (progressBarState == View.VISIBLE) {
+                showProgressBar();
             }
         }
     }
@@ -128,7 +130,7 @@ public class MetarFragment extends Fragment{
     }
 
     private void displayDataBlock() {
-        if (rawMetar.getText().toString().equals("")) {
+        if (data == null) {
             metarData.setVisibility(View.GONE);
             welcomeHint.setVisibility(View.VISIBLE);
         } else {
@@ -140,7 +142,7 @@ public class MetarFragment extends Fragment{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("progressBarState", progressBar.getVisibility());
+        progressBarState = progressBar.getVisibility();
         Icepick.saveInstanceState(this, outState);
     }
 

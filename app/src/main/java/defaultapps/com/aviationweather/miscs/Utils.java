@@ -6,6 +6,7 @@ import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
@@ -40,8 +41,7 @@ public class Utils {
         snackbar.show();
     }
 
-    public static boolean checkIfHasNetwork()
-    {
+    public static boolean checkIfHasNetwork() {
         ConnectivityManager cm = (ConnectivityManager) MyApplication.getAppContext().getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = cm.getActiveNetworkInfo();
         return networkInfo != null && networkInfo.isConnected();

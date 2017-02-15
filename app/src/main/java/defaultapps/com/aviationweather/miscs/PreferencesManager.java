@@ -96,6 +96,13 @@ public class PreferencesManager {
         preferences.edit().putStringSet(FAVORITE_AIRPORTS, airports).apply();
     }
 
+    public void deleteFavoriteAirport(String aiportCode) {
+        Set<String> airports = new LinkedHashSet<>();
+        airports.addAll(getFavoriteAirports());
+        airports.remove(aiportCode);
+        preferences.edit().putStringSet(FAVORITE_AIRPORTS, airports).apply();
+    }
+
     public String getCurrentAirCode() {
         return preferences.getString(CURRENT_AIR_CODE, "none");
     }

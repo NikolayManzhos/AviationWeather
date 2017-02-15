@@ -35,7 +35,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
 
     private final String TAG = "ProcessingFragment";
 
-    private boolean isSavedStateNull;
+    private boolean isSavedStateNull = false;
 
     private List<String> dataMetar;
     private List<String> dataTaf;
@@ -75,6 +75,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
                 metarFragment.updateViews(metarController.parseMetarModel(metarSavedModel));
             }
             if (tafSavedModel != null) {
+                tafFragment.updateViews(tafController.parseTafModel(tafSavedModel));
             }
             isSavedStateNull = false;
         }
@@ -83,7 +84,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
             dataMetar = null;
         }
         if (dataTaf != null) {
-            tafFragment.updateViews(dataTaf.get(0));
+            tafFragment.updateViews(dataTaf);
             dataTaf = null;
         }
     }
@@ -97,11 +98,11 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     }
 
     @Override
-    public void tafSuccess(String airCode, ArrayList<String> data) {
-        tafFragment.updateViews(data.get(0));
-        currentAirCode = airCode;
-        mainView.showFavoriteButton();
-        mainView.showRefreshButton();
+    public void tafSuccess(String airCode, List<String> data) {
+        tafFragment.updateViews(data);
+//        currentAirCode = airCode;
+////        mainView.showFavoriteButton();
+////        mainView.showRefreshButton();
     }
 
     @Override
@@ -109,7 +110,6 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         mainView.showErrorSnackbar();
         metarFragment.hideProgressBar();
         tafFragment.hideProgressBar();
-        mainView.hideFavoriteButton();
         if (getCurrentAirCode() != null) {
             mainView.showRefreshButton();
         } else {

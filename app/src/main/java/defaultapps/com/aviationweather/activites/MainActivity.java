@@ -2,7 +2,9 @@ package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.media.AudioAttributes;
 import android.os.Vibrator;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +40,7 @@ import defaultapps.com.aviationweather.adapters.MainTabAdapter;
 import defaultapps.com.aviationweather.fragments.MetarFragment;
 import defaultapps.com.aviationweather.fragments.ProcessingFragment;
 import defaultapps.com.aviationweather.fragments.TafFragment;
+import defaultapps.com.aviationweather.miscs.MyApplication;
 import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.miscs.Utils;
 import defaultapps.com.aviationweather.views.MainView;
@@ -102,11 +105,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         //fab setup
         fabFavorite.setImageDrawable(new IconDrawable(this, MaterialIcons.md_favorite).colorRes(R.color.textColorPrimary));
-        if (processingFragment.getCurrentAirCode() != null && !favAirports.contains(processingFragment.getCurrentAirCode())) {
-            showFavoriteButton();
-        } else {
-            hideFavoriteButton();
-        }
+        showFavoriteButton();
 
         //setup list of the favorite airports
         favoritesAdapter = new FavoritesAdapter(favAirports);
@@ -121,18 +120,15 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
 
             @Override
-            public void onLongClick(String airportCode) {
-                Toast.makeText(MainActivity.this, "LongClick", Toast.LENGTH_SHORT).show();
+            public void onDeleteClick(String airportCode, int position) {
                 Vibrator vibrate = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
                 vibrate.vibrate(10);
+                favAirports.remove(airportCode);
+                PreferencesManager.get().deleteFavoriteAirport(airportCode);
+                Utils.showSnackbar(parentView, airportCode + "removed from favorites");
+                showFavoriteButton();
             }
         });
-
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
 
     }
 
@@ -142,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
         refreshItem = menu.findItem(R.id.action_refresh);
         Utils.setMenuIcon(refreshItem, MaterialIcons.md_refresh);
-        if (processingFragment.getCurrentAirCode() != null) {
+        if (!PreferencesManager.get().getCurrentAirCode().equals("none")) {
             showRefreshButton();
         } else {
             hideRefreshButton();
@@ -153,6 +149,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         Utils.setMenuIcon(searchItem, MaterialIcons.md_search);
         final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
         searchView.setMaxWidth(Integer.MAX_VALUE);
+        searchView.setQueryHint(getString(R.string.search_hint));
         SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         processingFragment.setFragments((MetarFragment) mainTabAdapter.getFragment(0), (TafFragment) mainTabAdapter.getFragment(1));
@@ -170,15 +167,6 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
         });
 
-        refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                if (processingFragment.getCurrentAirCode() != null) {
-                    processingFragment.submitQuery(processingFragment.getCurrentAirCode());
-                }
-                return false;
-            }
-        });
         return true;
     }
 
@@ -190,19 +178,23 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showFavoriteButton() {
-        if (!favAirports.contains(processingFragment.getCurrentAirCode())) {
+//        !PreferencesManager.get().getFavoriteAirports().contains(processingFragment.getCurrentAirCode())
+        if (!PreferencesManager.get().getFavoriteAirports().contains(PreferencesManager.get().getCurrentAirCode())) {
+            Log.i(TAG, "FAB is visible.");
+            Log.i(TAG, PreferencesManager.get().getCurrentAirCode());
             fabFavorite.setVisibility(View.VISIBLE);
             fabFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (processingFragment.getCurrentAirCode() != null) {
+                    if (!PreferencesManager.get().getCurrentAirCode().equals("none")) {
                         PreferencesManager.get().setFavoriteAirport(processingFragment.getCurrentAirCode());
-                        favAirports.add(processingFragment.getCurrentAirCode());
-                        favoritesAdapter.notifyDataSetChanged();
+                        favAirports.add(PreferencesManager.get().getCurrentAirCode());
                     }
                     hideFavoriteButton();
                 }
             });
+        } else {
+            hideFavoriteButton();
         }
 
     }
@@ -219,7 +211,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
             refreshItem.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
                 @Override
                 public boolean onMenuItemClick(MenuItem item) {
-                    processingFragment.submitQuery(processingFragment.getCurrentAirCode());
+                    processingFragment.submitQuery(PreferencesManager.get().getCurrentAirCode());
                     return false;
                 }
             });
