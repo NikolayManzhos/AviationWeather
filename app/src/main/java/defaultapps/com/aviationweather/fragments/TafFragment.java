@@ -58,11 +58,11 @@ public class TafFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
-            rawTaf.setText(savedInstanceState.getString("rawTaf"));
+            if (data != null) {
+                updateViews(data);
+            }
             if (progressBarState == View.VISIBLE) {
                 showProgressBar();
-            } else {
-                displayDataBlock();
             }
         }
     }
