@@ -1,10 +1,7 @@
 package defaultapps.com.aviationweather.activites;
 
 import android.app.SearchManager;
-import android.content.Context;
-import android.media.AudioAttributes;
 import android.os.Vibrator;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
@@ -22,15 +19,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
+
 
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -40,7 +36,6 @@ import defaultapps.com.aviationweather.adapters.MainTabAdapter;
 import defaultapps.com.aviationweather.fragments.MetarFragment;
 import defaultapps.com.aviationweather.fragments.ProcessingFragment;
 import defaultapps.com.aviationweather.fragments.TafFragment;
-import defaultapps.com.aviationweather.miscs.MyApplication;
 import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.miscs.Utils;
 import defaultapps.com.aviationweather.views.MainView;
@@ -75,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     private final String TAG = "MainActivity";
 
-    private Set<String> favAirports;
+    private List<String> favAirports;
 
 
 
@@ -95,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements MainView {
         mainTab.setupWithViewPager(mainPager);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        favAirports = (PreferencesManager.get().getFavoriteAirports() != null ? PreferencesManager.get().getFavoriteAirports() : new LinkedHashSet<String>());
+        favAirports = PreferencesManager.get().getFavoriteAirports();
         processingFragment = (ProcessingFragment) fragmentManager.findFragmentByTag("proc");
         if (processingFragment == null) {
             processingFragment = new ProcessingFragment();
@@ -120,12 +115,12 @@ public class MainActivity extends AppCompatActivity implements MainView {
             }
 
             @Override
-            public void onDeleteClick(String airportCode, int position) {
+            public void onDeleteClick(String airportCode) {
                 Vibrator vibrate = (Vibrator) getApplicationContext().getSystemService(VIBRATOR_SERVICE);
                 vibrate.vibrate(10);
                 favAirports.remove(airportCode);
                 PreferencesManager.get().deleteFavoriteAirport(airportCode);
-                Utils.showSnackbar(parentView, airportCode + "removed from favorites");
+                Utils.showSnackbar(parentView, airportCode + " removed from favorites");
                 showFavoriteButton();
             }
         });
@@ -178,8 +173,8 @@ public class MainActivity extends AppCompatActivity implements MainView {
 
     @Override
     public void showFavoriteButton() {
-//        !PreferencesManager.get().getFavoriteAirports().contains(processingFragment.getCurrentAirCode())
-        if (!PreferencesManager.get().getFavoriteAirports().contains(PreferencesManager.get().getCurrentAirCode())) {
+        if (!PreferencesManager.get().getFavoriteAirports().contains(PreferencesManager.get().getCurrentAirCode())
+                && !PreferencesManager.get().getCurrentAirCode().equals("none")) {
             Log.i(TAG, "FAB is visible.");
             Log.i(TAG, PreferencesManager.get().getCurrentAirCode());
             fabFavorite.setVisibility(View.VISIBLE);
@@ -187,8 +182,10 @@ public class MainActivity extends AppCompatActivity implements MainView {
                 @Override
                 public void onClick(View view) {
                     if (!PreferencesManager.get().getCurrentAirCode().equals("none")) {
-                        PreferencesManager.get().setFavoriteAirport(processingFragment.getCurrentAirCode());
-                        favAirports.add(PreferencesManager.get().getCurrentAirCode());
+                        String currentAirport = PreferencesManager.get().getCurrentAirCode();
+                        PreferencesManager.get().setFavoriteAirport(currentAirport);
+                        favAirports.add(currentAirport);
+                        favoritesAdapter.notifyItemInserted(favAirports.indexOf(currentAirport));
                     }
                     hideFavoriteButton();
                 }

@@ -13,4 +13,6 @@
 
     <string name="drawer_open">Open</string>
     <string name="drawer_close">Close</string>
+
+    <string name="welcome_message">Press {md-search} icon and type airport code.</string>
 </resources>

@@ -24,13 +24,13 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
     private List<String> favAirports;
     private Listener listener;
 
-    public FavoritesAdapter(Set<String> favorite) {
-        favAirports = new ArrayList<>(favorite);
+    public FavoritesAdapter(List<String> favorite) {
+        favAirports = favorite;
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private CardView cardView;
-        public ViewHolder(CardView v) {
+        ViewHolder(CardView v) {
             super(v);
             cardView = v;
         }
@@ -60,7 +60,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
             @Override
             public void onClick(View v) {
                 int newPosition = holder.getAdapterPosition();
-                listener.onDeleteClick(favAirports.get(newPosition), newPosition);
+                listener.onDeleteClick(favAirports.get(newPosition));
                 favAirports.remove(newPosition);
                 notifyItemRemoved(newPosition);
                 notifyItemRangeChanged(newPosition, favAirports.size());
@@ -76,7 +76,7 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.View
 
     public interface Listener {
         void onClick(String airportCode);
-        void onDeleteClick(String airportCode, int position);
+        void onDeleteClick(String airportCode);
     }
 
     public void setListener(Listener listener) {

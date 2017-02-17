@@ -202,7 +202,7 @@
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/welcome_hint"
-        android:text="Press {md-search} icon and type airport code."
+        android:text="@string/welcome_message"
         android:textColor="@color/textColorDisabledDark"
         android:textSize="40sp"
         android:layout_width="wrap_content"

@@ -20,13 +20,12 @@ import retrofit2.Response;
 
 public class TafController {
 
-    public TAF tafModel = new TAF();
+    private TAF tafModel = new TAF();
 
     private OnSuccessTafCallback onSuccessTafCallback;
     private OnErrorCallback onErrorCallback;
 
 
-    private String tafRaw;
 
     public TafController( OnSuccessTafCallback onSuccessTafCallback, OnErrorCallback onErrorCallback) {
         this.onSuccessTafCallback = onSuccessTafCallback;

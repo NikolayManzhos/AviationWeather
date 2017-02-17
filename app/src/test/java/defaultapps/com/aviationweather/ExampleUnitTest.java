@@ -4,6 +4,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+
+import defaultapps.com.aviationweather.controllers.MetarController;
+import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
+import defaultapps.com.aviationweather.interfaces.OnSuccesMetarCallback;
+import defaultapps.com.aviationweather.miscs.MyApplication;
 
 import static org.junit.Assert.*;
 
@@ -12,10 +18,14 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+
 public class ExampleUnitTest {
 
+    private final String AIRPORT_CODE = "UUDD";
+
+
     @Test
-    public void addition_isCorrect() throws Exception {
-        assertEquals(4, 2 + 2);
+    public void metarControllerTest() throws Exception {
+
     }
 }

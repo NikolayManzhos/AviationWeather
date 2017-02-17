@@ -6,7 +6,6 @@ import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.fonts.MaterialIcons;

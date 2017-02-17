@@ -15,6 +15,6 @@ public interface AviationWeatherAPI {
     @GET("api/metar/{airportCode}?options=info,translate")
     Call<METAR> getMetarData(@Path("airportCode") String airportCode);
 
-    @GET("api/taf/{airportCode}?options=info,translate")
+    @GET("api/taf/{airportCode}?options=summary")
     Call<TAF> getTafData(@Path("airportCode") String airportCode);
 }

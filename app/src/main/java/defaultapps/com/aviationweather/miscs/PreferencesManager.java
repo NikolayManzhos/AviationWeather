@@ -5,8 +5,10 @@ import android.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 import defaultapps.com.aviationweather.models.metar.METAR;
@@ -83,17 +85,16 @@ public class PreferencesManager {
         preferences.edit().putString(SAVED_TAF, gson.toJson(taf)).apply();
     }
 
-    public Set<String> getFavoriteAirports() {
-        return preferences.getStringSet(FAVORITE_AIRPORTS, null);
+    public List<String> getFavoriteAirports() {
+        String favAirports = preferences.getString(FAVORITE_AIRPORTS, "none");
+        return !favAirports.equals("none") ? new ArrayList<String>(Arrays.asList(favAirports.split(", "))) : new ArrayList<String>();
     }
 
     public void setFavoriteAirport(String favoriteAirport) {
-        Set<String> airports = new LinkedHashSet<>();
-        if (getFavoriteAirports() != null) {
-            airports.addAll(getFavoriteAirports());
-        }
+        List<String> airports = getFavoriteAirports();
         airports.add(favoriteAirport);
-        preferences.edit().putStringSet(FAVORITE_AIRPORTS, airports).apply();
+        String airportsString = airports.toString().replaceAll("^\\[|]$", "");
+        preferences.edit().putString(FAVORITE_AIRPORTS, airportsString).apply();
     }
 
     public void deleteFavoriteAirport(String aiportCode) {

@@ -19,7 +19,7 @@ import retrofit2.Callback;
 
 public class MetarController {
 
-    public METAR metar = new METAR();
+    private METAR metar = new METAR();
 
     private OnErrorCallback onErrorCallback;
     private OnSuccesMetarCallback onSuccesMetarCallback;

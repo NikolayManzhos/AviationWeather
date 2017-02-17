@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import defaultapps.com.aviationweather.controllers.MetarController;
@@ -110,7 +109,8 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         mainView.showErrorSnackbar();
         metarFragment.hideProgressBar();
         tafFragment.hideProgressBar();
-        if (getCurrentAirCode() != null) {
+        if (!PreferencesManager.get().getCurrentAirCode().equals("none")) {
+            mainView.showRefreshButton();
             mainView.showRefreshButton();
         } else {
             mainView.hideRefreshButton();
@@ -121,7 +121,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
     public void badConnection() {
         tafFragment.hideProgressBar();
         metarFragment.hideProgressBar();
-        if (getCurrentAirCode() != null) {
+        if (!PreferencesManager.get().getCurrentAirCode().equals("none")) {
             mainView.showRefreshButton();
             mainView.showFavoriteButton();
         } else {
@@ -129,6 +129,7 @@ public class ProcessingFragment extends Fragment implements OnErrorCallback, OnS
         }
     }
 
+    @Deprecated
     public String getCurrentAirCode() {
         return currentAirCode;
     }

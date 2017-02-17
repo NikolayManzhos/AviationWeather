@@ -25,15 +25,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardElevation="2dp">
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
-                    <TextView
-                        android:id="@+id/text_view_raw_metar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
-                </RelativeLayout>
+                <TextView
+                    android:id="@+id/text_view_raw_metar"
+                    android:textAppearance="@style/DataFont"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="12dp"/>
             </android.support.v7.widget.CardView>
             <TextView
                 android:text="@string/metar_translated"
@@ -187,7 +184,7 @@
 
     <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/welcome_hint"
-        android:text="Press {md-search} icon and type airport code."
+        android:text="@string/welcome_message"
         android:textColor="@color/textColorDisabledDark"
         android:textSize="40sp"
         android:layout_width="wrap_content"
