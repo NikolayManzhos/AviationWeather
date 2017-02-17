@@ -1,4 +1,4 @@
-package defaultapps.com.aviationweather.adapters;
+package defaultapps.com.aviationweather.ui.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import com.joanzapata.iconify.widget.IconButton;
 import com.joanzapata.iconify.widget.IconTextView;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import defaultapps.com.aviationweather.R;
 

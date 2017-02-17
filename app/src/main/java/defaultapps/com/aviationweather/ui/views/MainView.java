@@ -1,4 +1,4 @@
-package defaultapps.com.aviationweather.views;
+package defaultapps.com.aviationweather.ui.views;
 
 /**
  * Created on 2/2/2017.

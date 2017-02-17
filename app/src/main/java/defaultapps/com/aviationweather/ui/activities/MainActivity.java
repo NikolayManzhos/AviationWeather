@@ -1,4 +1,4 @@
-package defaultapps.com.aviationweather.activites;
+package defaultapps.com.aviationweather.ui.activities;
 
 import android.app.SearchManager;
 import android.os.Vibrator;
@@ -31,14 +31,14 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import defaultapps.com.aviationweather.R;
-import defaultapps.com.aviationweather.adapters.FavoritesAdapter;
-import defaultapps.com.aviationweather.adapters.MainTabAdapter;
-import defaultapps.com.aviationweather.fragments.MetarFragment;
-import defaultapps.com.aviationweather.fragments.ProcessingFragment;
-import defaultapps.com.aviationweather.fragments.TafFragment;
+import defaultapps.com.aviationweather.ui.adapters.FavoritesAdapter;
+import defaultapps.com.aviationweather.ui.adapters.MainTabAdapter;
+import defaultapps.com.aviationweather.ui.fragments.MetarFragment;
+import defaultapps.com.aviationweather.ui.fragments.ProcessingFragment;
+import defaultapps.com.aviationweather.ui.fragments.TafFragment;
 import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.miscs.Utils;
-import defaultapps.com.aviationweather.views.MainView;
+import defaultapps.com.aviationweather.ui.views.MainView;
 
 
 public class MainActivity extends AppCompatActivity implements MainView {

@@ -1,9 +1,8 @@
-package defaultapps.com.aviationweather.fragments;
+package defaultapps.com.aviationweather.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 
 import java.util.List;
 
@@ -15,7 +14,7 @@ import defaultapps.com.aviationweather.interfaces.OnErrorCallback;
 import defaultapps.com.aviationweather.miscs.PreferencesManager;
 import defaultapps.com.aviationweather.models.metar.METAR;
 import defaultapps.com.aviationweather.models.taf.TAF;
-import defaultapps.com.aviationweather.views.MainView;
+import defaultapps.com.aviationweather.ui.views.MainView;
 
 /**
  * Created on 2/2/2017.

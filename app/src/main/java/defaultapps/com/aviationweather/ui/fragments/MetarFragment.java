@@ -1,4 +1,4 @@
-package defaultapps.com.aviationweather.fragments;
+package defaultapps.com.aviationweather.ui.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

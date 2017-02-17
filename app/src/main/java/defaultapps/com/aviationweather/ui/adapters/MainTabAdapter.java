@@ -1,4 +1,4 @@
-package defaultapps.com.aviationweather.adapters;
+package defaultapps.com.aviationweather.ui.adapters;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 
 
 import defaultapps.com.aviationweather.R;
-import defaultapps.com.aviationweather.fragments.MetarFragment;
-import defaultapps.com.aviationweather.fragments.TafFragment;
+import defaultapps.com.aviationweather.ui.fragments.MetarFragment;
+import defaultapps.com.aviationweather.ui.fragments.TafFragment;
 import defaultapps.com.aviationweather.miscs.MyApplication;
 
 /**
